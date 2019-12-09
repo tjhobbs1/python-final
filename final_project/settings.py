@@ -43,7 +43,7 @@ SECRET_KEY = '8t$n0d4=#lla(%$2-3bhgcvj$6ptmb$d^iv$n(yy$s8wo(@^7x'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.air-med.org','157.245.216.198',]
 
 
 # Application definition
@@ -105,7 +105,7 @@ DATABASES = {
         # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'workapp',
-        'USER' : 'postgres',
+        'USER' : 'tyhobbs',
         'PASSWORD' : get_secret('DB_PASSWORD'),
         'HOST' : 'localhost',
         'PORT' : '5432',
@@ -153,3 +153,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
