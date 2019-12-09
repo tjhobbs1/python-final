@@ -43,7 +43,7 @@ SECRET_KEY = '8t$n0d4=#lla(%$2-3bhgcvj$6ptmb$d^iv$n(yy$s8wo(@^7x'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.air-med.org','157.245.216.198',]
+ALLOWED_HOSTS = ['.air-med.org','157.245.216.198']
 
 
 # Application definition
