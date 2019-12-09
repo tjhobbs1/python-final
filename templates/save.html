@@ -1,0 +1,2972 @@
+def registration_view(request):
+	context = {}
+	if request.POST:
+		form = RegistrationForm(request.POST)
+		if form.is_valid():
+			form.save()
+			email = form.cleaned_data.get('email')
+			raw_password = form.cleaned_data.get('password1')
+			account.username = form.cleaned_data.get('username')
+			account.first_name = form.cleaned_data.get('firstName')
+			account.last_name = form.cleaned_data.get('lastName')
+			account = authenticate(email=email, password=raw_password)
+			login(request, account)
+			return redirect('home')
+		else:
+			context['registration_form'] = form
+
+	else:
+		form = RegistrationForm()
+		context['registration_form'] = form
+	return render(request, 'register.html', context)
+
+
+
+Flight Number: 
+<input type="text" name="flight_id">
+<br>
+Transport Type:
+<select name="transport_type">
+    <option value="Ground">Ground</option>
+    <option value="Air">Air</option>
+</select>
+<br>
+Base:
+<select name="base">
+    <option value="Airmed1">Airmed 1</option>
+    <option value="Airmed2">Airmed 2</option>
+    <option value="Airmed3" selected>Airmed 3</option>
+    <option value="Airmed4">Airmed 4</option>
+</select>
+<br>
+Tail  Number:
+<select name="tail_num">
+    <option value="911ED">911ED</option>
+    <option value="911KX">911KX</option>
+    <option value="534LN">534LN</option>
+    <option value="530LN">530LN</option>
+</select>
+<br>
+Med Crew 1:
+<select name="med_crew_1">
+    <option value="Ty Hobbs">Ty Hobbs</option>
+    <option value="Joe Smith">Joe Smith</option>
+    <option value="Brad Vancil">Brad Vancil</option>
+    <option value="Heather Scott">Heather Scott</option>
+</select>
+<br>
+Med Crew 2:
+<select name="med_crew_2">
+    <option value="Ty Hobbs">Ty Hobbs</option>
+    <option value="Joe Smith">Joe Smith</option>
+    <option value="Brad Vancil">Brad Vancil</option>
+    <option value="Heather Scott">Heather Scott</option>
+</select>
+<br>
+Med Crew 3:
+<select name="med_crew_3">
+    <option value="Ty Hobbs">Ty Hobbs</option>
+    <option value="Joe Smith">Joe Smith</option>
+    <option value="Brad Vancil">Brad Vancil</option>
+    <option value="Heather Scott">Heather Scott</option>
+</select>
+<br>
+Pilot:
+<select name="pilot">
+    <option value="Ty Hobbs">Ty Hobbs</option>
+    <option value="Joe Smith">Joe Smith</option>
+    <option value="Brad Vancil">Brad Vancil</option>
+    <option value="Heather Scott">Heather Scott</option>
+</select>
+<br>
+Dispatcher:
+<select name="dispatcher">
+    <option value="Ty Hobbs">Ty Hobbs</option>
+    <option value="Joe Smith">Joe Smith</option>
+    <option value="Brad Vancil">Brad Vancil</option>
+    <option value="Heather Scott">Heather Scott</option>
+</select>
+
+<br>
+Activity of Flight:
+<select name="activity_flight">
+    <option selected="selected" value="">Please Select the Appropriate Activity of Flight</option>
+    <option value="Completed">Completed By Air</option>
+    <option value="Completed">Completed By Ground</option>
+    <option value="Aborted Flight Completed by Ground">Aborted Flight-Completed by Ground</option>
+    <option value="Aborted Flight Patient Care Only">Aborted Flight-Patient Care Only</option>
+    <option value="Aborted">Aborted Flight-Returned to Base/No Care/No Transport</option>
+</select>
+<br>
+Transport Type:
+<br>
+<input type="radio" name="scene_hosp" value="Scene"> Scene<br>
+<input type="radio" name="scene_hosp" value="Interfacility"> Interfacility<br>
+
+<br>
+Times:
+<br>
+Dispatched: <input type="text" name="dispatched">
+Enroute: <input type="text" name="enroute">
+
+
+
+
+
+
+def postflight(request):
+   if request.method == 'POST':
+       if request.POST['flight_id'] and request.POST['transport_type'] and request.POST['base'] and request.POST['tail_num'] and request.POST['med_crew_1']and request.POST['med_crew_2'] and request.POST['med_crew_3'] and request.POST['pilot'] and request.POST['dispatcher'] and request.POST['activity_flight'] and request.POST['scene_hosp']:
+           postflight = PostFlight()
+           postflight.flight_id = request.POST['flight_id']
+           postflight.transport_type = request.POST['transport_type']
+           postflight.base = request.POST['base']
+           postflight.tail_num = request.POST['tail_num']
+           postflight.med_crew_1 = request.POST['med_crew_1']
+           postflight.med_crew_2 = request.POST['med_crew_2']
+           postflight.med_crew_3 = request.POST['med_crew_3']
+           postflight.pilot = request.POST['pilot']
+           postflight.dispatcher = request.POST['dispatcher']
+           postflight.activity_flight = request.POST['activity_flight']
+           postflight.scene_hosp = request.POST['scene_hosp']
+          
+           postflight.save()
+           return redirect('/postflight/')
+       else:
+            return render(request,'postflight.html',{'error' : 'Everything is required'}) 
+   else:
+       return render(request,'postflight.html') 
+
+
+
+
+       <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+       <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+       <!-- DW6 -->
+       <head><script type="text/javascript">/* <![CDATA[ */_cf_loadingtexthtml="<img alt=' ' src='/CFIDE/scripts/ajax/resources/cf/images/loading.gif'/>";
+       _cf_contextpath="";
+       _cf_ajaxscriptsrc="/CFIDE/scripts/ajax";
+       _cf_jsonprefix='//';
+       _cf_websocket_port=8576;
+       _cf_flash_policy_port=1244;
+       _cf_clientid='900B65D834C1B708518A724471335546';/* ]]> */</script><script type="text/javascript" src="/CFIDE/scripts/ajax/messages/cfmessage.js"></script>
+       <script type="text/javascript" src="/CFIDE/scripts/ajax/package/cfajax.js"></script>
+       
+       <script type="text/javascript">/* <![CDATA[ */
+           ColdFusion.Ajax.importTag('CFAJAXPROXY');
+       /* ]]> */</script>
+       
+       <script type="text/javascript">/* <![CDATA[ */
+           var _cf_Users=ColdFusion.AjaxProxy.init('/Intranet/components/Users.cfc','usersProxy');
+           _cf_Users.prototype.checkUserPasswordByID=function(userid,password) { return ColdFusion.AjaxProxy.invoke(this, "checkUserPasswordByID","52C1ABB0A83F26BBBC", {userid:userid,password:password});};
+           _cf_Users.prototype.checkFlightNumberDuplicate=function(flightNumber,programName) { return ColdFusion.AjaxProxy.invoke(this, "checkFlightNumberDuplicate","52C1ABB0A83F26BBBC", {flightNumber:flightNumber,programName:programName});};
+           _cf_Users.prototype.checkValidationCode=function(rsqCode) { return ColdFusion.AjaxProxy.invoke(this, "checkValidationCode","52C1ABB0A83F26BBBC", {rsqCode:rsqCode});};
+       /* ]]> */</script>
+       <script type="text/javascript" src="/CFIDE/scripts/ajax/yui/yahoo-dom-event/yahoo-dom-event.js"></script>
+       <script type="text/javascript" src="/CFIDE/scripts/ajax/package/cfcalendar.js"></script>
+       <script type="text/javascript" src="/CFIDE/scripts/ajax/ext/ext-all.js"></script>
+       <script type="text/javascript" src="/CFIDE/scripts/ajax/yui/animation/animation-min.js"></script>
+       <script type="text/javascript" src="/CFIDE/scripts/ajax/yui/calendar/calendar-min.js"></script>
+       <link rel="stylesheet" type="text/css" href="/CFIDE/scripts/ajax/resources/yui/yui.css" />
+       <link rel="stylesheet" type="text/css" href="/CFIDE/scripts/ajax/resources/cf/cf.css" />
+       <script type="text/javascript" src="/CFIDE/scripts/cfform.js"></script>
+       <script type="text/javascript" src="/CFIDE/scripts/masks.js"></script>
+       
+       <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+       <meta name="mssmarttagspreventparsing" content="true" />
+       <meta http-equiv="imagetoolbar" content="no" />
+       <meta http-equiv="MSThemeCompatible" content="no" />
+       <title>TAMMA-The Air Methods Medical Application</title>
+       <style type="text/css">
+       @import "traversecity.css";
+       </style>
+       <!--[if IE]>
+       <style type="text/css">
+       @import "css/traversecity-IE.css";
+       </style>
+       <![endif]-->
+       <link href="traversecity-print.css" rel="stylesheet" type="text/css" media="print" />
+       
+       <script language="javascript" type="text/javascript">
+       function limitText(limitField, limitCount, limitNum) {
+           if (limitField.value.length > limitNum) {
+               limitField.value = limitField.value.substring(0, limitNum);
+           } else {
+               limitCount.value = limitNum - limitField.value.length;
+           }
+       }
+       </script>
+       
+       <style type= "text/css">
+       
+       table.bold { }
+       
+       a:link {
+           color: #FFFFFF;
+           text-decoration: none;
+       }
+       a:visited {
+           text-decoration: none;
+           color: #FFFFFF;
+       }
+       a:hover {
+           text-decoration: underline;
+       }
+       a:active {
+           text-decoration: none;
+       }
+       .style7 {font-size: x-small}
+       .style8 {color: #FFFF00}
+       .style10 {
+           font-size: x-small;
+           color: #FFFFFF;
+           font-weight: bold;
+       }
+       .style12 {font-size: x-small; font-weight: bold; }
+       .style14 {font-size: x-small; color: #CC0000; }
+       .style15 {color: #990000}
+       .style17 {color: #FFFF00; font-weight: bold; }
+       .style19 {color: #990000; font-weight: bold; }
+       .style20 {font-size: x-small; color: #FFFF00; }
+       .style21 {font-size: x-small; color: #990000; font-weight: bold; }
+       .style3 {font-size: small}
+       .style23 {font-size: x-small; color: #990000; }
+       .style24 {
+           font-size: x-small;
+           color: #FFFF00;
+           font-weight: bold;
+       }
+       .style25 {color: #FF6600}
+       .dropdownfieldsmall {
+                       width: 190px;
+       }
+       </style>
+       <script type="text/JavaScript">
+       <!--
+       function jm_datemask(t)
+       {var donepatt = /^(\d{2})\/(\d{2})\/(\d{4})$/;
+       var patt = /(\d{2}).*(\d{2}).*(\d{4})/;
+       var str = t.value;
+       if (!str.match(donepatt))
+       {result = str.match(patt);
+       if (result!= null)
+       {t.value = t.value.replace(/[^\d]/gi,'');
+       str = result[1] + '/' + result[2] + '/' + result[3];
+       t.value = str;
+       }else{
+       if (t.value.match(/[^\d]/gi))
+       t.value = t.value.replace(/[^\d]/gi,'');
+       }}}
+       //-->
+       </script>
+       
+       
+       
+       
+       <script type="text/javascript">
+           var usersCFC = new usersProxy();
+           
+               var med1SigGood = false;
+               var med1SigShown = true;
+           
+               var med2SigGood = false;
+               var med2SigShown = true;
+           
+               var pilotSigGood = false;
+           
+               var dispatchSigGood = true;
+           
+           
+           var specialtyFlightRequired = false;
+           var abortedReasonRequired = false;
+           
+           //Function for checking a users entered password against the database
+           function checkUserPassword(userid, password){
+               var result = usersCFC.checkUserPasswordByID(userid, password);
+               
+               return result;
+           }
+           //When med 1 signature is entered, we check it
+           function checkMed1Sig(){
+               med1sigGood = false;
+               
+               var medID = document.getElementById('a5').options[document.getElementById('a5').selectedIndex].value;
+               var medPassword = document.getElementById('mc1sig').value;
+               if (isNumber(medID) == true) {
+                   var isPasswordGood = checkUserPassword(medID, medPassword);
+                   if (isPasswordGood) {
+                       document.getElementById('medSig1Problem').innerHTML = '<img src="/Images/checkCircle.png" width="20" height="20">';
+                       med1SigGood = true;
+                   }
+                   else {
+                       med1SigGood = false;
+                       document.getElementById('medSig1Problem').innerHTML = '<img src="/Images/errorCircle.png" width="20" height="20">';
+                   }
+               }
+               
+           }
+           //When med 2 signature is entered, we check it
+           function checkMed2Sig(){
+               med2sigGood = false;
+               
+               var medID = document.getElementById('a6').options[document.getElementById('a6').selectedIndex].value;
+               var medPassword = document.getElementById('mc2sig').value;
+               if (isNumber(medID) == true) {
+                   var isPasswordGood = checkUserPassword(medID, medPassword);
+                   if (isPasswordGood) {
+                       med2SigGood = true;
+                       document.getElementById('medSig2Problem').innerHTML = '<img src="/Images/checkCircle.png" width="20" height="20">';
+                   }
+                   else {
+                       med2SigGood = false;
+                       document.getElementById('medSig2Problem').innerHTML = '<img src="/Images/errorCircle.png" width="20" height="20">';
+                   }
+               }
+           
+           
+           }
+           //When the pilots signature is entered, we check it
+           function checkPilotSig(){
+               pilotSigGood = false;
+               
+               var pilotID = document.getElementById('a4').options[document.getElementById('a4').selectedIndex].value;
+               var pilotPassword = document.getElementById('psig').value;
+               if (isNumber(pilotID) == true) {
+                   var isPasswordGood = checkUserPassword(pilotID, pilotPassword);
+                   if (isPasswordGood) {
+                       pilotSigGood = true;
+                       document.getElementById('pilotSigProblem').innerHTML = '<img src="/Images/checkCircle.png" width="20" height="20">';
+                   }
+                   else {
+                       pilotSigGood = false;
+                       document.getElementById('pilotSigProblem').innerHTML = '<img src="/Images/errorCircle.png" width="20" height="20">';
+                   }
+               }
+           }
+           //If and when the dispatchers signature is entered, we check it
+           function checkDispatchSig(){
+               dispatchSigGood = false;
+               
+               var dispatchID = document.getElementById('a7').options[document.getElementById('a7').selectedIndex].value;
+               var dispatchPassword = document.getElementById('dissig').value;
+               if (isNumber(dispatchID) == true) {
+                   var isPasswordGood = checkUserPassword(dispatchID, dispatchPassword);
+                   if (isPasswordGood) {
+                       dispatchSigGood = true;
+                       document.getElementById('dispatchSigProblem').innerHTML = '<img src="/Images/checkCircle.png" width="20" height="20">';
+                   }
+                   else {
+                       dispatchSigGood = false;
+                       document.getElementById('dispatchSigProblem').innerHTML = '<img src="/Images/errorCircle.png" width="20" height="20">';
+                   }
+               } else {
+                   dispatchSigGood = true;
+               }
+               
+           }
+           
+           
+           
+           
+           function checkFormForErrors(){
+               //Start checking for form errors
+               //First we are going to set numberErrors and errorMessages variables and at the end if numberErrors is greater than 0 we dont post the form
+               var numberErrors = 0;
+               var errorMessages = '';
+               
+               
+                   //check if flight number is not blank
+                   if(document.getElementById('a2').value == ''){
+                       numberErrors += 1;
+                       errorMessages = errorMessages + 'A flight number must be included! \n';
+                   }
+               
+               //check if a base location is selected
+               if(document.getElementById('a1').options[document.getElementById('a1').selectedIndex].value == ''){
+                   numberErrors += 1;
+                   errorMessages = errorMessages + 'You must selecte a base location! \n';
+               }
+               
+               //check if a airframe is selected
+               if(document.getElementById('a75').options[document.getElementById('a75').selectedIndex].value == ''){
+                   numberErrors += 1;
+                   errorMessages = errorMessages + 'You must selecte an airframe! \n';
+               }
+               
+                       //check if a tailnumber is selected
+               if(document.getElementById('tailnumber').options[document.getElementById('tailnumber').selectedIndex].value == ''){
+                   numberErrors += 1;
+                   errorMessages = errorMessages + 'You must selecte an tailnumber! \n';
+               }
+               
+               //check if a medcrew 1 is selected
+               if(document.getElementById('a5').options[document.getElementById('a5').selectedIndex].value == ''){
+                   numberErrors += 1;
+                   errorMessages = errorMessages + 'You must selecte a MedCrew 1! \n';
+               }
+               //checks to see if Med Crew 1 is equal to Med Crew 2
+               if (document.getElementById('a6').options[document.getElementById('a6').selectedIndex].value != '' && document.getElementById('a5').options[document.getElementById('a5').selectedIndex].value != ''){
+                   if(document.getElementById('a6').options[document.getElementById('a6').selectedIndex].value == document.getElementById('a5').options[document.getElementById('a5').selectedIndex].value){
+                       numberErrors += 1;
+                       errorMessages = errorMessages + 'You cannot select the same name in both Med Crew Drop downs! \n';
+                   }
+               }else{
+               }
+               
+               //check if a medcrew 1 is selected and is equal to Specialty Crew 1 require Specialty Flight to be selected.
+               if(document.getElementById('a5').options[document.getElementById('a5').selectedIndex].value == 'Specialty Crew 1'){
+                   specialtyFlightRequired = true;
+               }
+               //check if a medcrew 2 is selected and is equal to Specialty Crew 2 require Specialty Flight to be selected.
+               if(document.getElementById('a6').options[document.getElementById('a6').selectedIndex].value == 'Specialty Crew 2'){
+                   specialtyFlightRequired = true;
+               }
+               
+               //check if a medcrew 2 is selected
+               if(document.getElementById('a6').options[document.getElementById('a6').selectedIndex].value == ''){
+                   numberErrors += 1;
+                   errorMessages = errorMessages + 'You must selecte a MedCrew 2! \n';
+               }
+               
+               //check if a pilot is selected
+               if(document.getElementById('a4').options[document.getElementById('a4').selectedIndex].value == ''){
+                   numberErrors += 1;
+                   errorMessages = errorMessages + 'You must selecte a Pilot! \n';
+               }
+               
+               //check if a dispatcher is selected
+               if(document.getElementById('a7').options[document.getElementById('a7').selectedIndex].value == ''){
+                   numberErrors += 1;
+       
+                   errorMessages = errorMessages + 'You must selecte a Dispatcher! \n';
+               }
+               
+               //check if a flight activity is selected
+               if(document.getElementById('a9').options[document.getElementById('a9').selectedIndex].value == ''){
+                   numberErrors += 1;
+                   errorMessages = errorMessages + 'You must select an Activity of Flight! \n';
+               }
+               
+               //check if activity of transport is completed
+               if(document.getElementById('a9').options[document.getElementById('a9').selectedIndex].value == 'Aborted'){
+                   if(document.getElementById('a10').options[document.getElementById('a10').selectedIndex].value == ''){
+                       numberErrors += 1;
+                       errorMessages = errorMessages + 'You must select a reason why flight was aborted. \n';
+                   }
+               }
+       
+               
+               //Check cabin temperatures are numeric
+               
+               var numberCabinTemps = document.getElementById('numberTempsToAdd').value;
+               for (var cT = 1; cT <= numberCabinTemps; cT++) {
+                   var curCabTemp = document.getElementById('cabinTemp'+cT);
+                   var curCabTime = document.getElementById('cabinTempTime'+cT);
+                   if(curCabTemp.value != '' && !isNumber(curCabTemp.value)){
+                       numberErrors += 1;
+                       errorMessages = errorMessages + 'Recorded cabin temps must be numeric! \n';
+                       break;
+                   }
+                   if(curCabTemp.value != '' && curCabTime.value == ''){
+                       numberErrors += 1;
+       
+                       errorMessages = errorMessages + 'A time must be entered when a cabin temperature is recorded! \n';
+                       break;
+                   }
+               }
+               
+               //Check if anything selected for the Air or Ground Stand by
+               var airGroundChecked = false;
+               var airgroundradios = document.getElementsByName('a92');
+               for(var i=0; i<airgroundradios.length; i++){
+                   if(airgroundradios[i].checked){
+                       airGroundChecked = true;
+                       break;
+                   }
+               }
+               
+               if(airGroundChecked == false){
+                   numberErrors += 1;
+                   errorMessages = errorMessages + 'Was an air or ground standby performed? \n';
+               }
+               
+               
+               
+               //Check if day or night flight selected
+               var daynightflightchecked = false;
+               var daynightradios = document.getElementsByName('a70');
+               for(var i=0; i<daynightradios.length; i++){
+                   if(daynightradios[i].checked){
+                       daynightflightchecked = true;
+                       break;
+                   }
+               }
+               
+               if(daynightflightchecked == false){
+                   numberErrors += 1;
+                   errorMessages = errorMessages + 'Was this a Day or Night Flight? \n';
+               }
+               
+               //Check if a predesignated lz was checked
+               var predesignatedlzchecked = false;
+               var predesignatedradios = document.getElementsByName('a71');
+               for(var i=0; i<predesignatedradios.length; i++){
+                   if(predesignatedradios[i].checked){
+                       predesignatedlzchecked = true;
+                       break;
+                   }
+               }
+               
+               if(predesignatedlzchecked == false){
+                   numberErrors += 1;
+                   errorMessages = errorMessages + 'Was this a Predesignated LZ? \n';
+               }
+               
+               //Check if a transport type was checked
+               var transportTypeChecked = false;
+               var transporttyperadios = document.getElementsByName('a8');
+               for(var i=0; i<transporttyperadios.length; i++){
+                   if(transporttyperadios[i].checked){
+                       transportTypeChecked = true;
+                       break;
+                   }
+               }
+               
+               if(transportTypeChecked == false){
+                   numberErrors += 1;
+                   errorMessages = errorMessages + 'What was the transport type of this flight? \n';
+               }
+               
+               //Check if a patient age category was checked
+               var patientAgeCatChecked = false;
+               var patientagecatradios = document.getElementsByName('a78');
+               for(var i=0; i<patientagecatradios.length; i++){
+                   if(patientagecatradios[i].checked){
+                       patientAgeCatChecked = true;
+                       break;
+                   }
+               }
+               
+               if(patientAgeCatChecked == false){
+                   numberErrors += 1;
+                   errorMessages = errorMessages + 'What was the age category of the patient? \n';
+               }
+               
+               //Was a CAMTS category selected
+               var catmscatselected = false;
+               var camtscatradios = document.getElementsByName('a9a');
+               var isSpecialtyFlight = false;
+               for(var i=0; i<camtscatradios.length; i++){
+                   if(camtscatradios[i].checked){
+                       if(camtscatradios[i].value == 'Specialty Flight'){
+                           isSpecialtyFlight = true;
+                       }
+                       catmscatselected = true;
+                       break;
+                   }
+               }
+               
+               if(catmscatselected == false){
+                   numberErrors += 1;
+                   errorMessages = errorMessages + 'What was the CAMTS Category? \n';
+               }
+               
+               //check if specialty flight required
+               if(specialtyFlightRequired == true){
+                   var spcatselected = false;
+                   var camtscatradioscsp = document.getElementsByName('a9a');
+                   for(var i=0; i<camtscatradioscsp.length; i++){
+                       if(camtscatradioscsp[i].checked){
+                           if(camtscatradioscsp[i].value == 'Specialty Flight'){
+                               spcatselected = true;
+                               break;
+                           }
+                           
+                       }
+                   }
+                   if(spcatselected == false){
+                       numberErrors += 1;
+                       errorMessages = errorMessages + 'When a specialty crew member is selected, the Specialty Flight option must be selected in \"Other Type\". \n';
+                   }
+                   
+               }
+               
+               
+               
+               
+               //Check if communication issues were selected
+               var communicationissueselected = false;
+               var communicationissueradios = document.getElementsByName('a25');
+               for(var i=0; i<communicationissueradios.length; i++){
+                   if(communicationissueradios[i].checked){
+                       communicationissueselected = true;
+                       break;
+                   }
+               }
+               
+               if(communicationissueselected == false){
+                   numberErrors += 1;
+                   errorMessages = errorMessages + 'Were there any communications issues? \n';
+               }
+               
+               //Check if there were external/internal communication problems
+               var extintcommunicationissueselected = false;
+               var extintcommunicationissueradios = document.getElementsByName('a83');
+               for(var i=0; i<extintcommunicationissueradios.length; i++){
+                   if(extintcommunicationissueradios[i].checked){
+                       extintcommunicationissueselected = true;
+                       break;
+                   }
+               }
+               
+               if(extintcommunicationissueselected == false){
+                   numberErrors += 1;
+                   errorMessages = errorMessages + 'Were there internal or external communication problems? \n';
+               }
+               
+               
+               //Check if there were customer service issues
+               var customerserviceissuesselected = false;
+               var customerserviceradios = document.getElementsByName('a79');
+               for(var i=0; i<customerserviceradios.length; i++){
+                   if(customerserviceradios[i].checked){
+                       customerserviceissuesselected = true;
+                       break;
+                   }
+               }
+               
+               if(customerserviceissuesselected == false){
+                   numberErrors += 1;
+                   errorMessages = errorMessages + 'Were there any Customer Service Issues? \n';
+               }
+               
+               //Check if callback performed
+               var callbackperformedselected = false;
+               var callbackperformedradios = document.getElementsByName('a11');
+               for(var i=0; i<callbackperformedradios.length; i++){
+                   if(callbackperformedradios[i].checked){
+                       callbackperformedselected = true;
+                       break;
+                   }
+               }
+               
+               if(callbackperformedselected == false){
+                   numberErrors += 1;
+                   errorMessages = errorMessages + 'Was a call back performed? \n';
+               }
+               
+               //Check if flight priority selected
+               var flightpriorityselected = false;
+               var flightpriorityradios = document.getElementsByName('a28a');
+               for(var i=0; i<flightpriorityradios.length; i++){
+                   if(flightpriorityradios[i].checked){
+                       flightpriorityselected = true;
+                       break;
+                   }
+               }
+               
+               if(flightpriorityselected == false){
+                   numberErrors += 1;
+                   errorMessages = errorMessages + 'What was the priority of the flight? \n';
+               }
+               
+               //Check Run Times valid times
+               var assignedRunTimeValue = document.getElementById('a116').value;
+               var enrouteRunTimeValue = document.getElementById('a117').value;
+               var onsceneRunTimeValue = document.getElementById('a118').value;
+               var ptcontactRunTimeValue = document.getElementById('a119').value;
+               var departRunTimeValue = document.getElementById('a120').value;
+               var arriveDestinationRunTimeValue = document.getElementById('a121').value;
+               var departRecRunTimeValue = document.getElementById('a122').value;
+               var arriveBaseRunTimeValue = document.getElementById('a123').value;
+               
+               
+               if(checkValidTime(assignedRunTimeValue) == false){
+                   numberErrors += 1;
+                   errorMessages = errorMessages + 'Assigned Run Time is not a valid time! \n';
+               }
+               
+               if(checkValidTime(enrouteRunTimeValue) == false){
+                   numberErrors += 1;
+                   errorMessages = errorMessages + 'En Route Run Time is not a valid time! \n';
+               }
+               
+               if(checkValidTime(onsceneRunTimeValue) == false){
+                   numberErrors += 1;
+                   errorMessages = errorMessages + 'On Scene Run Time is not a valid time! \n';
+               }
+               
+               if(checkValidTime(ptcontactRunTimeValue) == false){
+                   numberErrors += 1;
+                   errorMessages = errorMessages + 'PT Contact Run Time is not a valid time! \n';
+               }
+               
+               if(checkValidTime(departRunTimeValue) == false){
+                   numberErrors += 1;
+                   errorMessages = errorMessages + 'Depart Run Time is not a valid time! \n';
+               }
+               
+               if(checkValidTime(arriveDestinationRunTimeValue) == false){
+                   numberErrors += 1;
+                   errorMessages = errorMessages + 'Arrive Destination Run Time is not a valid time! \n';
+               }
+               
+               if(checkValidTime(departRecRunTimeValue) == false){
+                   numberErrors += 1;
+                   errorMessages = errorMessages + 'Depart Receiving Hospital Run Time is not a valid time! \n';
+               }
+               
+               if(checkValidTime(arriveBaseRunTimeValue) == false){
+                   numberErrors += 1;
+                   errorMessages = errorMessages + 'Arrive At Base Run Time is not a valid time! \n';
+               }
+               
+               //Check that run times are in chronological order
+               if((parseInt(assignedRunTimeValue,10) <= parseInt(enrouteRunTimeValue,10) || parseInt(assignedRunTimeValue,10) > 1200 && parseInt(enrouteRunTimeValue,10) < 1200) && (parseInt(enrouteRunTimeValue,10) <= parseInt(onsceneRunTimeValue,10) || parseInt(enrouteRunTimeValue,10) > 1200 && parseInt(onsceneRunTimeValue,10) < 1200)  && (parseInt(onsceneRunTimeValue,10) <= parseInt(ptcontactRunTimeValue,10) || parseInt(onsceneRunTimeValue,10) > 1200 && parseInt(ptcontactRunTimeValue,10) < 1200) && (parseInt(ptcontactRunTimeValue,10) <= parseInt(departRunTimeValue,10) || parseInt(ptcontactRunTimeValue,10) > 1200 && parseInt(departRunTimeValue,10) < 1200) && (parseInt(departRunTimeValue,10) <= parseInt(arriveDestinationRunTimeValue,10) || parseInt(departRunTimeValue,10) > 1200 && parseInt(arriveDestinationRunTimeValue,10) < 1200) && (parseInt(arriveDestinationRunTimeValue,10) <= parseInt(departRecRunTimeValue,10) || parseInt(arriveDestinationRunTimeValue,10) > 1200 && parseInt(departRecRunTimeValue,10) < 1200) && (parseInt(departRecRunTimeValue,10) <= parseInt(arriveBaseRunTimeValue,10) || parseInt(departRecRunTimeValue,10) > 1200 && parseInt(arriveBaseRunTimeValue,10) < 1200)){
+                   //do nothing just checking
+               } else {
+                   numberErrors += 1;
+                   errorMessages = errorMessages + 'Run Times must be in chronological order! \n';
+               }
+               
+               
+               
+               //Check if Lift-Off Delay drop should be required
+               var lotNumber = document.getElementById('a126').value;
+               if(lotNumber != ''){
+                   var lotNumParse = parseInt(lotNumber);
+                   if(lotNumParse > 10){
+                       if(document.getElementById('a127').options[document.getElementById('a127').selectedIndex].value == ''){
+                           numberErrors += 1;
+                           errorMessages = errorMessages + 'You must select why the Lift-Off Time Delay was greater than 10 minutes! \n';
+                       }
+                   }
+                   
+               } else {
+                   numberErrors += 1;
+                   errorMessages = errorMessages + 'Assigned and En Route Run Times are required! \n';
+               }
+               
+               //Check if Time On Scene Delay drop should be required
+               var tosNumber = document.getElementById('a128').value;
+                   
+               //Whether scene = 1 or hospital = 2
+               var sceneOrHosp = 1;
+               //a8 radios
+               var scHospRadios = document.getElementsByName('a8');
+               for (var i=0; i<scHospRadios.length; i++){
+                   if(scHospRadios[i].checked && scHospRadios[i].value == 'Interfacility'){
+                       sceneOrHosp = 2;
+                       break;
+                   }
+               }
+               
+               if(tosNumber != ''){
+                   var tosNumParse = parseInt(tosNumber);
+                   var tosToBeGreaterThan = 15;
+                   if(sceneOrHosp == 2){
+                       tosToBeGreaterThan = 20;
+                   }
+                   if(tosNumParse > tosToBeGreaterThan){
+                       if(document.getElementById('a129').options[document.getElementById('a129').selectedIndex].value == ''){
+                           numberErrors += 1;
+                           errorMessages = errorMessages + 'You must select why the Time On Scene Delay was greater than '+tosToBeGreaterThan+' minutes! \n';
+                       }
+                   }
+               } else {
+                   numberErrors += 1;
+                   errorMessages = errorMessages + 'On Scene and Depart Run Times are required! \n';
+               }
+               
+               
+               // Check if Delay at receiving hospital is numeric if filled in
+               if(document.getElementById('a124').value != ''){
+                   if (isNumber(document.getElementById('a124').value) == false) {
+                       numberErrors += 1;
+                       errorMessages = errorMessages + 'Delay @ Receiving Hospital must be a valid number! \n';
+                   } else if(parseInt(document.getElementById('a124').value, 10) > 25){
+                       if(document.getElementById('a125').value == ''){
+                           numberErrors += 1;
+                           errorMessages = errorMessages + 'Explain why delay @ receiving hospital was greater than 25 minutes! \n';
+                       }
+                   }
+               }
+               
+               
+               
+               if(numberErrors == 0){
+                   return true;
+               } else {
+                   alert(errorMessages);
+                   return false;
+       
+               }
+           
+           }
+           
+           //Check for valid date
+           // Checks a string to see if it in a valid date format
+           // of (D)D/(M)M/(YY)YY and returns true/false
+           // http://www.qodo.co.uk/blog/javascript-checking-if-a-date-is-valid
+           function isValidDate(s) {
+               // format D(D)/M(M)/(YY)YY
+               var dateFormat = /^\d{1,4}[\.|\/|-]\d{1,2}[\.|\/|-]\d{1,4}$/;
+           
+               if (dateFormat.test(s)) {
+                   // remove any leading zeros from date values
+                   s = s.replace(/0*(\d*)/gi,"$1");
+                   var dateArray = s.split(/[\.|\/|-]/);
+                 
+                   // correct month value
+                   dateArray[1] = dateArray[1]-1;
+           
+                   // correct year value
+                   if (dateArray[2].length<4) {
+                       // correct year value
+                       dateArray[2] = (parseInt(dateArray[2]) < 50) ? 2000 + parseInt(dateArray[2]) : 1900 + parseInt(dateArray[2]);
+                   }
+           
+                   var testDate = new Date(dateArray[2], dateArray[1], dateArray[0]);
+                   if (testDate.getDate()!=dateArray[0] || testDate.getMonth()!=dateArray[1] || testDate.getFullYear()!=dateArray[2]) {
+                       return false;
+                   } else {
+                       return true;
+                   }
+               } else {
+                   return false;
+               }
+           }
+           
+           function isNumber(n) {
+             return !isNaN(parseFloat(n)) && isFinite(n);
+           }
+           
+           //Show Hide CAMTS Category
+           
+           function showHideCamtsCat(){
+               
+               var catTbl = document.getElementById('camtsCatTable');
+               var otherTbl = document.getElementById('camtsOtherTable');
+               
+               var camtscatotherradios = document.getElementsByName('camtsOtherType');
+               for (var i=0; i<camtscatotherradios.length; i++){
+                   if(camtscatotherradios[i]. checked && camtscatotherradios[i].value =='camts'){
+                       catTbl.style.display = '';
+                       otherTbl.style.display = 'none';
+                       break;
+                   }else{
+                       
+                       catTbl.style.display = 'none';
+                       otherTbl.style.display ='';
+                       break;
+                   }
+               }
+           }
+           
+                   //Show Hide Night Vision Area
+           function showHideNightVision(){
+               var nightVisDiv = document.getElementById('underNightVision');
+               var preDesRadios = document.getElementsByName('a99');
+               for (var i=0; i<preDesRadios.length; i++){
+                   if(preDesRadios[i].checked && preDesRadios[i].value =='Yes'){
+                       nightVisDiv.style.display = '';
+                       
+                       break;
+                   }else{
+                       
+                       nightVisDiv.style.display = 'none';
+                       
+                       break;
+                   }
+               }
+           }
+           
+           //Show Hide DIS
+           function ShowHideDISBox(){
+           
+               var disElement1 = document.getElementById('hiddenDISBox');
+           
+               var showHideEl = document.getElementsByName('a91');
+           
+               for(var i=0; i<showHideEl.length; i++){
+                   if(showHideEl[i].checked && showHideEl[i].value == 'Yes'){
+                       disElement1.style.display= '';
+                       break;
+                   }else{
+                       disElement1.style.display= 'none';
+                       break;
+                   }
+               }
+           }
+             
+           //Show Hide Verbal Debrief
+       function showHideVerbalDebrief(){
+           
+       
+           var hideEl1 = document.getElementById('hiddenDebrief1');
+           var hideEl2 = document.getElementById('hiddenDebrief2');
+           
+           var showDebriefRadios = document.getElementsByName('verbaldebrief');
+           
+           for (var i=0; i < showDebriefRadios.length; i++){
+               if(showDebriefRadios[i].checked && showDebriefRadios[i].value == 'Yes'){
+                   hideEl1.style.display='none';
+                   hideEl2.style.display='none';
+                   break;
+               }else{
+                   hideEl1.style.display='';
+                   break;
+               }
+           }
+       }
+       
+       //Show Hide Aborted Options
+       function showHideAbortedOptions(){
+           var abort = document.getElementById('abortedOptionsList');
+           if(document.getElementById('a9').options[document.getElementById('a9').selectedIndex].value == 'Aborted'){
+               abort.style.display = '';
+           }else{
+               abort.style.display = 'none';
+           }
+       }
+       
+       function showHideVDComments(){
+           
+           var hideEl2 = document.getElementById('hiddenDebrief2');
+           var showDebriefRadios = document.getElementsByName('verbaldebrief');
+           var oreasonradios = document.getElementsByName('oreason');
+           
+           for(var i=0; i <showDebriefRadios.length; i++){
+               if(showDebriefRadios[i].checked && showDebriefRadios[i].value == 'No'){
+                   
+                   for(var e=0; e < oreasonradios.length; e++){
+                       if(oreasonradios[e].checked && oreasonradios[e].value == 'Other'){
+                           hideEl2.style.display = '';
+                           break;
+                       }else if(oreasonradios[e].checked){
+                           hideEl2.style.display = 'none';
+                           break;
+                       }
+       
+                   }
+               }
+           }
+       }
+       
+       
+       //Checking if Med Crew 1 or 2 are specialty
+       function checkIfMedSpecSelected()
+       {
+           var med1drop = document.getElementById('a5');
+           var med2drop = document.getElementById('a6');
+           //setting the night goggles names
+           document.getElementById('med1nightvisionname').innerHTML = med1drop.options[med1drop.selectedIndex].text;
+           document.getElementById('med2nightvisionname').innerHTML = med2drop.options[med2drop.selectedIndex].text;
+       }
+       
+       
+       
+       function showHideCabinTemps(){
+               
+               var catTbl = document.getElementById('showHideTempDiv');
+               
+               var cabinTempRadios = document.getElementsByName('isTempRecorded');
+               for (var i=0; i<cabinTempRadios.length; i++){
+                   if(cabinTempRadios[i]. checked && cabinTempRadios[i].value =='Yes'){
+                       catTbl.style.display = '';
+                       break;
+                   }else{
+                       
+                       catTbl.style.display = 'none';
+                       break;
+                   }
+               }
+           }
+       
+       function addNewCabinTemp(tempid){
+           document.getElementById('cabinTemp'+tempid).onchange = '';
+           var currentNumberTemps = document.getElementById('numberTempsToAdd').value;
+           var newNumberTemps = parseInt(currentNumberTemps) + 1;
+           
+           var breakHtml = '<br/>';
+           var htmlToAdd = '<span>Temperature: </span><input id="cabinTemp'+newNumberTemps+'" name="cabinTemp'+newNumberTemps+'" onChange="addNewCabinTemp('+newNumberTemps+')"/><span> Time: </span><input id="cabinTempTime'+newNumberTemps+'" name="cabinTempTime'+newNumberTemps+'"/>';
+           
+           
+           var newDiv = document.createElement('div');
+           newDiv.className = 'tempShow';
+           newDiv.innerHTML = htmlToAdd + breakHtml;
+           
+           document.getElementById('containerForTemps').appendChild(newDiv);
+           
+           document.getElementById('numberTempsToAdd').value = newNumberTemps;
+       }
+       
+       function checkMed1NightChecked(){
+           if(document.getElementById('med1nightcheck').checked == true){
+               document.getElementById('nvOcc1Text').style.display = '';
+               document.getElementById('med1nightocc').style.display = '';
+               document.getElementById('med1nightdesc').style.display = '';
+               
+           } else {
+               document.getElementById('nvOcc1Text').style.display = 'none';
+               document.getElementById('med1nightocc').style.display = 'none';
+               document.getElementById('med1nightdesc').style.display = 'none';
+           }
+       }
+       
+       function checkMed2NightChecked(){
+           if(document.getElementById('med2nightcheck').checked == true){
+               document.getElementById('nvOcc2Text').style.display = '';
+               document.getElementById('med2nightocc').style.display = '';
+               document.getElementById('med2nightdesc').style.display = '';
+               
+           } else {
+               document.getElementById('nvOcc2Text').style.display = 'none';
+               document.getElementById('med2nightocc').style.display = 'none';
+               document.getElementById('med2nightdesc').style.display = 'none';
+           }
+       }
+       
+       
+           //Show Hide SMS Section
+           
+           function showHideSMS(){
+               
+               var smsTR = document.getElementById('shwSMS');
+               
+               var priorityradios = document.getElementsByName('a28a');
+               for (var i=0; i<priorityradios.length; i++){
+                   if(priorityradios[i].checked && priorityradios[i].value =='One'){
+                       smsTR.style.display = '';
+                       break;
+                   }else if(priorityradios[i].checked && priorityradios[i].value =='Two'){
+                       smsTR.style.display = '';
+                       break;
+                   }else{
+                       smsTR.style.display = 'none';
+                   }
+               }
+           }
+       
+       
+       
+       //Check if valid military time 0000-2359
+           function checkValidTime(timeIN){
+               //Default return false if invalid time
+               var timeIsValid = false;
+               //Checking to make sure the string length is 4
+               if(timeIN.length == 4){
+                   //Converting string passed in to a number/int
+                   var timeInt = parseInt(timeIN,10);
+                   //Checking to make sure its a valid number
+                   if(!isNaN(timeInt)){
+                       //Checking to make sure the number is greater than 0 and less than 2400
+                       if(timeInt >= 0 && timeInt <= 2359){
+                           //Checking to make sure that the right side is greater than/equal to 0 and less than 60
+                           var rightNumber = parseInt(timeIN.substr(2,2),10);
+                           if(rightNumber >= 0 && rightNumber < 60){
+                               //If its true lets say time is valid
+                               timeIsValid = true;
+                           }
+                       }
+                   }
+               }
+               
+               return timeIsValid;
+           }
+       
+       
+           //Functions for when lift-off time or tome on scene have changed
+           function liftOffTimesChanged(){
+               var assignedValue = document.getElementById('a116').value;
+               var enRouteValue = document.getElementById('a117').value;
+               
+               if(checkValidTime(assignedValue) == true && checkValidTime(enRouteValue) == true){
+                   var totalDifferenceInMinutes = getTimeDifference(assignedValue, enRouteValue);	
+                   
+                   document.getElementById('a126').value = totalDifferenceInMinutes;
+                   
+                   checkShowLOTOSDrops();
+                   
+               } else {
+                   if(checkValidTime(assignedValue) == false && assignedValue != ''){
+                       alert('Assigned Run Time is not a valid time!');
+                   }
+                   
+                   if (checkValidTime(enRouteValue) == false && enRouteValue != '') {
+                       alert('En Route Run Time is not a valid time!');
+                   }
+               }
+           }
+           
+           function timeOnSceneChanged(){
+               var onSceneValue = document.getElementById('a118').value;
+               var departValue = document.getElementById('a120').value;	
+       
+               
+               
+               if(checkValidTime(onSceneValue) == true && checkValidTime(departValue) == true){
+                               
+                   var totalDifferenceInMinutes = getTimeDifference(onSceneValue, departValue);	
+                   
+                   document.getElementById('a128').value = totalDifferenceInMinutes;
+                   
+                   checkShowLOTOSDrops();
+                   
+               } else {
+                   if(checkValidTime(onSceneValue) == false && onSceneValue != ''){
+                       alert('On Scene Run Time is not a valid time!');
+                   }
+                   
+                   if (checkValidTime(departValue) == false && departValue != '') {
+                       alert('Depart Run Time is not a valid time!');
+                   }
+               }
+           }
+           
+           function destinationReceivingHspChange(){
+               var arriveDestValue = document.getElementById('a121').value;
+               var departReceivingValue = document.getElementById('a122').value;	
+               
+               
+               if(checkValidTime(arriveDestValue) == true && checkValidTime(departReceivingValue) == true){
+                               
+                   var totalDifferenceInMinutes = getTimeDifference(arriveDestValue, departReceivingValue);	
+                   
+                   document.getElementById('a124').value = totalDifferenceInMinutes;
+                   
+                   checkDelayReceivingHospShowForm();
+                   
+               } else {
+                   if(checkValidTime(arriveDestValue) == false && arriveDestValue != ''){
+                       alert('Arrive Destination Run Time is not a valid time!');
+                   }
+                   
+                   if (checkValidTime(departReceivingValue) == false && departReceivingValue != '') {
+                       alert('Depart Receiving Hospital Run Time is not a valid time!');
+                   }
+               }
+           }
+           
+           function getTimeDifference(time1, time2){
+                   var time1Hour = parseInt(time1.substr(0,2),10);
+                   var time2Hour = parseInt(time2.substr(0,2),10);
+                   
+                   var time1Minutes = parseInt(time1.substr(2,2),10);
+                   var time2Minutes = parseInt(time2.substr(2,2),10);
+                   
+                   var hourToMinutesDifference = 0;
+                   
+                   
+                   if (time2Hour > time1Hour) {
+                       hourToMinutesDifference = ((time2Hour - time1Hour) * 60);
+                       if ((time2Hour - time1Hour) >= 1) {
+                           hourToMinutesDifference -= 60;
+                       }
+                   } else if(time1Hour > 12 && time2Hour < 12){
+                       var hourTime1To24 = 24 - time1Hour;
+                       time2Hour += (time1Hour + hourTime1To24);
+                       hourToMinutesDifference = ((time2Hour - time1Hour) * 60);
+                       if ((time2Hour - time1Hour) >= 1) {
+                           hourToMinutesDifference -= 60;
+                       }
+                   }
+                   
+                   var time1To60 = 0;
+                   if (time2Hour != time1Hour || time2Minutes < time1Minutes || (time1Hour > 12 && time2Hour < 12)) {
+                       time1To60 = 60 - time1Minutes;
+                   } else {
+                       time1To60 = time2Minutes - time1Minutes;
+                       time2Minutes = 0;
+                   }
+                   var totalDifferenceInMinutes = (time2Minutes + time1To60 + hourToMinutesDifference);
+                   
+                   return totalDifferenceInMinutes;
+           }
+           
+           function checkShowLOTOSDrops(){
+               var lotNumber = document.getElementById('a126').value;
+               var tosNumber = document.getElementById('a128').value;
+               
+               var showRow = false;
+               
+               //Whether scene = 1 or hospital = 2
+               var sceneOrHosp = 1;
+               //a8 radios
+               var scHospRadios = document.getElementsByName('a8');
+               for (var i=0; i<scHospRadios.length; i++){
+                   if(scHospRadios[i].checked && scHospRadios[i].value == 'Interfacility'){
+                       sceneOrHosp = 2;
+                       break;
+                   }
+               }
+               
+               if(lotNumber != ''){
+                   var lotNumParse = parseInt(lotNumber);
+                   if(lotNumParse > 10){
+                       showRow = true;
+                       document.getElementById('divForLOTDropDown').style.display = '';
+                   } else {
+                       document.getElementById('divForLOTDropDown').style.display = 'none';
+                   }
+                   
+               } else {
+                   document.getElementById('divForLOTDropDown').style.display = 'none';
+               }
+               
+               if(tosNumber != ''){
+                   var tosNumParse = parseInt(tosNumber);
+                   var tosToBeGreaterThan = 15;
+                   if(sceneOrHosp == 2){
+                       tosToBeGreaterThan = 20;
+                   }
+                   if(tosNumParse > tosToBeGreaterThan){
+                       showRow = true;
+                       document.getElementById('divForTOSDrop').style.display = '';
+                   } else {
+                       document.getElementById('divForTOSDrop').style.display = 'none';
+                   }
+               } else {
+               
+                   document.getElementById('divForTOSDrop').style.display = 'none';
+               }
+               
+               if(showRow == true){
+                   document.getElementById('tableRowForLOTOS').style.display = '';
+               } else {
+                   document.getElementById('tableRowForLOTOS').style.display = 'none';
+               }
+               
+           }
+           
+           function checkDelayReceivingHospShowForm(){
+               var delay = document.getElementById('a124').value;
+               if(parseInt(delay, 10) > 25){
+                   document.getElementById('delayRecHospTR').style.display = '';
+               } else {
+                   document.getElementById('delayRecHospTR').style.display = 'none';
+               }
+               
+           }
+           
+           
+       
+       </script>
+           
+       
+       <script type="text/javascript">/* <![CDATA[ */
+           ColdFusion.Ajax.importTag('CFINPUT-DATEFIELD');
+       /* ]]> */</script>
+       
+               <script type="text/javascript">/* <![CDATA[ */
+                   var _cf_DATEFIELD_init_15189426980145243=function()
+                   {
+                       ColdFusion.Calendar.setUpCalendar("a3", "MM/DD/YYYY", 0, ["S","M","T","W","T","F","S"], ["January","February","March","April","May","June","July","August","September","October","November","December"], 'frmcqi', {month:'11', day:'29', year:'2019'});
+                   };ColdFusion.Event.registerOnLoad(_cf_DATEFIELD_init_15189426980145243);
+               /* ]]> */</script>
+               <script type="text/javascript">
+       <!--
+           _CF_checkfrmcqi = function(_CF_this)
+           {
+               //reset on submit
+               _CF_error_exists = false;
+               _CF_error_messages = new Array();
+               _CF_error_fields = new Object();
+               _CF_FirstErrorField = null;
+       
+       
+               //display error messages and return success
+               if( _CF_error_exists )
+               {
+                   if( _CF_error_messages.length > 0 )
+                   {
+                       // show alert() message
+                       _CF_onErrorAlert(_CF_error_messages);
+                       // set focus to first form error, if the field supports js focus().
+                       if( _CF_this[_CF_FirstErrorField].type == "text" )
+                       { _CF_this[_CF_FirstErrorField].focus(); }
+       
+                   }
+                   return false;
+               }else {
+                   // run userdefined onSubmit javascript. 
+                   return checkFormForErrors()
+                   return true;
+               }
+           }
+       //-->
+       </script>
+       </head>
+       <body id="twocol">
+           <div id="wrapper">
+               <ul id="skipnav">
+                   <li><a href="#content">skip to main content</a></li>
+                   <li><a href="#content-nav">skip to main links</a></li>
+               </ul>
+               <div id="header">
+                 <img src="/Images/TAMA-Ver-22.gif" alt="TAMMA-The Air Methods Medical Application" name="logo" width="475" height="76" id="logo" />
+                 <ul id="site-nav">
+                       <li><a class="b" href="my_account.cfm">My Account </a></li> <li><a class="b" href="my_statisticsV2.cfm">My Statistics </a></li> 
+                       <li><a class="b" href="national_pfd.cfm?MM_logout=1">Log Out </a> </li>
+                 </ul>
+             </div>
+               <div id="photo-banner">		</div>
+               <div id="container">
+                   <div id="content">
+                       <table width="100%" height="27" border="0">
+                         <tr>
+                           <td width="50%" background="/Images/Post_flight_debriefing2.jpg">&nbsp;</td>
+                           <td width="50%" background="/Images/bottom_bar2.jpg"><div align="right"><strong><span class="style7"><span class="style8">Mercy One, IA</span></span></strong></div></td>
+                         </tr>
+                     </table>
+       
+                       <form name="frmcqi" id="frmcqi" action="&#x2f;Intranet&#x2f;MercyOneIA&#x2f;national_pfd.cfm" method="post" onsubmit="return _CF_checkfrmcqi(this)">
+                         <table width="100%" border="1">
+                           <tr>
+                             <td width="50%" bgcolor="345888"><div align="center"><span class="style7">
+                             
+                               <span class="style7" style="float:left; padding-top:4px; padding-right:2px;"><strong>Date: </strong></span>
+                                 <div  style="position:relative;float:left;">
+           <div  style="float:left;">
+               <input name="a3" type="text" value="11/29/2019" class="datefieldinput"  readonly="readonly"  id="a3"  />
+            </div><div  id="a3frmcqi_cf_buttondiv" style="float:left;padding:3px;">
+               
+               <img id="a3frmcqi_cf_button" src="/CFIDE/scripts/ajax/resources/cf/images/DateChooser.png" alt='Date Picker' />
+               
+            </div><div  id="a3frmcqi_cf_container" style="display:none; position:absolute; font-size:12px;overflow:visible;float:left;z-index:9050;top:1.5em;">
+               
+            </div>
+        </div>  
+                             <span class="style8"><strong> </strong></span></span>
+                             
+                              <input type="hidden" id="numberTempsToAdd" name="numberTempsToAdd" value="1">
+                             <input name="userID" type="hidden" value="3356" id="userID"  /> <input name="a29" type="hidden" value="Mercy One, IA" id="a29"  /> <input name="a54" type="hidden" value="{ts '2019-11-29 08:36:32'}" id="a54"  /> <input name="a55" type="hidden" value="{ts '2019-11-30 08:36:32'}" id="a55"  /> <input name="a2a" type="hidden" id="a2a"  /> <input name="urversion2" type="hidden" value="V2" id="urversion2"  />
+                             </div></td>
+                             <td width="50%" bgcolor="345888"><div align="left"><span class="style7"><strong>Flight Number</strong>: <span class="style8"><strong> </strong></span></span>
+                               
+                                   
+                                   <input name="a2" type="text" class="style7" id="a2" style="background-color:Yellow" onBlur="this.style.backgroundColor='White'" size="12" />
+                               
+                             </div></td>
+                           </tr>
+                           
+                           <tr>
+                             <td colspan="2" bgcolor="5087B4">&nbsp;</td>
+                           </tr>
+                           <tr>
+       
+                             <td bgcolor="345888"><div align="center"><span class="style7"><strong><span class="style15">*</span>Base</strong>:<br />
+                                     <strong>
+                                     <select name="a1" class="dropdownfieldsmall"  id="a1" >
+       
+                                       <option value="" style="background-color:Yellow"> Please Select A Base</option>
+                                       
+                                         <option value="Mercy One Des Moines">Mercy One Des Moines</option>
+                                     
+                                         <option value="Mercy One Knoxville">Mercy One Knoxville</option>
+                                     
+                                         <option value="Mercy One Sioux City">Mercy One Sioux City</option>
+                                     </select>
+                                   </strong></span></div></td>
+                             <td bgcolor="345888"><div align="center"><span class="style7"><strong><span class="style15">*</span>Airframe Type / Tail # </strong>:<strong><br />
+                                       <select name="a75" class="dropdownfieldsmall"  id="a75" >
+       
+                                         <option value="" selected="selected" style="background-color:Yellow">Please Select An Airframe</option>
+                                         <option value="RW">Rotor Wing</option>
+                                         <option value="Ground Transport">Ground Transport</option>
+                             </select>
+                                       <br />
+                                       <select name="tailnumber" class="dropdownfieldsmall" id="tailnumber">
+                                        <option value="">Please Select Tail Number</option>
+                                        <option value="Not Listed">Not Listed</option>
+                                       
+                                       <option value="N530LN">N530LN</option>
+                                       
+                                       <option value="N534LN">N534LN</option>
+                                       
+                                       <option value="N693AM">N693AM</option>
+                                       
+                                       <option value="N911ED">N911ED</option>
+                                       
+                                       <option value="N911KX">N911KX</option>
+                                       
+                             </select>
+                             </strong></span></div></td>
+                           </tr>
+                           <tr>
+                             <td colspan="2" bgcolor="5087B4">&nbsp;</td>
+                           </tr>
+                           <tr>
+                             <td bgcolor="345888"><div align="center"><span class="style7"><strong><span class="style15">*</span>Med Crew 1</strong>:<strong> <br />
+                                       <select name="a5" class="dropdownfieldsmall"  id="a5"  onchange="checkIfMedSpecSelected()" >
+       
+                                         <option selected="selected" style="background-color:Yellow" value="">Contains Everyone</option>
+                                         <option value="Specialty Crew 1">Specialty Crew 1</option>
+                                         
+                                           <option value="6874">Boyer, Kara</option>
+                                         
+                                           <option value="8641">Brown, Carrie</option>
+                                         
+                                           <option value="8404">Brown, Mary</option>
+                                         
+                                           <option value="3312">Cochran, Dennis</option>
+                                         
+                                           <option value="8642">Dahle, Neil</option>
+                                         
+                                           <option value="6678">Damstetter, Brianna</option>
+                                         
+                                           <option value="6363">Davis, Hannah</option>
+                                         
+                                           <option value="5919">Denney, Molly</option>
+                                         
+                                           <option value="6866">Devries, Jenna</option>
+                                         
+                                           <option value="8647">Dye, Gordon</option>
+                                         
+                                           <option value="3380">Eason, Sarah</option>
+                                         
+                                           <option value="3355">Formaro, Ashli</option>
+                                         
+                                           <option value="8643">Goedken, Heather</option>
+                                         
+                                           <option value="8708">Gonzales, Nik</option>
+                                         
+                                           <option value="3353">Greenlee, Kara</option>
+                                         
+                                           <option value="3354">Hadwiger, Jeff</option>
+                                         
+                                           <option value="8644">Hagen, Dawn</option>
+                                         
+                                           <option value="3344">Hagen, Emily</option>
+                                         
+                                           <option value="8648">Hagen, JoyLynn</option>
+                                         
+                                           <option value="8670">Hansen, Chase</option>
+                                         
+                                           <option value="3356">Hobbs, Ty</option>
+                                         
+                                           <option value="6671">Hoffman, Crystal</option>
+                                         
+                                           <option value="6875">Hudson, Lamar</option>
+                                         
+                                           <option value="5920">Huisman, Sue</option>
+                                         
+                                           <option value="8523">Hutton, Melody</option>
+                                         
+                                           <option value="3358">Johnston, Jeff</option>
+                                         
+                                           <option value="6673">Jones, Kate</option>
+                                         
+                                           <option value="3359">Kauzlarich, Cody</option>
+                                         
+                                           <option value="6677">Kenyon, Amy</option>
+                                         
+                                           <option value="3360">Klein, Matthew</option>
+                                         
+                                           <option value="8645">Knutson, Tonja</option>
+                                         
+                                           <option value="8712">Kotz, Ryan</option>
+                                         
+                                           <option value="8671">Leonard, Nathan</option>
+                                         
+                                           <option value="6674">Mattes, Charity</option>
+                                         
+                                           <option value="5636">McKeever, Haili</option>
+                                         
+                                           <option value="3365">McVay, Michelle</option>
+                                         
+                                           <option value="3366">Meyer, Sara</option>
+                                         
+                                           <option value="8511">Miller, Kelsey</option>
+                                         
+                                           <option value="6732">Murphy, Cary</option>
+                                         
+                                           <option value="8668">Neff, Ethan</option>
+                                         
+                                           <option value="8679">Ott, Matt</option>
+                                         
+                                           <option value="5264">Ouverson, Shelly</option>
+                                         
+                                           <option value="7169">Padgett, Kristin</option>
+                                         
+                                           <option value="8649">Pepper, Jim</option>
+                                         
+                                           <option value="6670">Pollard, Stephanie</option>
+                                         
+                                           <option value="3369">Randall, Jennifer</option>
+                                         
+                                           <option value="8503">Rizer, Laura</option>
+                                         
+                                           <option value="6364">Schenimann, Jerod</option>
+                                         
+                                           <option value="5921">Schooley, Courtney</option>
+                                         
+                                           <option value="8359">Schroeder, Mary</option>
+                                         
+                                           <option value="6676">Schuh, Morgan</option>
+                                         
+                                           <option value="8650">Schultz, Michael</option>
+                                         
+                                           <option value="3371">Scott, Heather</option>
+                                         
+                                           <option value="6580">Sigwarth, Kim</option>
+                                         
+                                           <option value="3439">Smith, Rhonda</option>
+                                         
+                                           <option value="3375">Stanford, Jason</option>
+                                         
+                                           <option value="8651">Stucker, Dustin</option>
+                                         
+                                           <option value="8680">Swanson, Dan</option>
+                                         
+                                           <option value="3377">Swenson, Jennifer</option>
+                                         
+                                           <option value="6041">Terry, Andrew</option>
+                                         
+                                           <option value="6867">Udelhoven, Mackenzie</option>
+                                         
+                                           <option value="3381">Vancil, Brad</option>
+                                         
+                                           <option value="8560">Vickroy, Adam</option>
+                                         
+                                           <option value="8646">Williams, Bryan</option>
+                                         
+                                           <option value="8669">Wolf, Kaliegh</option>
+                                         
+                                           <option value="3510">Wood, Kendall</option>
+                                         </select>
+                             </strong></span></div></td>
+                             <td bgcolor="345888"><div align="center"><span class="style7"><strong><span class="style15">*</span>Med Crew 2</strong>:<strong> <br />
+                                       <select name="a6" class="dropdownfieldsmall"  id="a6"  onchange="checkIfMedSpecSelected()" >
+       
+                                         <option selected="selected" style="background-color:Yellow" value="">Contains Everyone</option>
+                                         <option value="Specialty Crew 2">Specialty Crew 2</option>
+                                         
+                                           <option value="6874">Boyer, Kara</option>
+                                         
+                                           <option value="8641">Brown, Carrie</option>
+                                         
+                                           <option value="8404">Brown, Mary</option>
+                                         
+                                           <option value="3312">Cochran, Dennis</option>
+                                         
+                                           <option value="8642">Dahle, Neil</option>
+                                         
+                                           <option value="6678">Damstetter, Brianna</option>
+                                         
+                                           <option value="6363">Davis, Hannah</option>
+                                         
+                                           <option value="5919">Denney, Molly</option>
+                                         
+                                           <option value="6866">Devries, Jenna</option>
+                                         
+                                           <option value="8647">Dye, Gordon</option>
+                                         
+                                           <option value="3380">Eason, Sarah</option>
+                                         
+                                           <option value="3355">Formaro, Ashli</option>
+                                         
+                                           <option value="8643">Goedken, Heather</option>
+                                         
+                                           <option value="8708">Gonzales, Nik</option>
+                                         
+                                           <option value="3353">Greenlee, Kara</option>
+                                         
+                                           <option value="3354">Hadwiger, Jeff</option>
+                                         
+                                           <option value="8644">Hagen, Dawn</option>
+                                         
+                                           <option value="3344">Hagen, Emily</option>
+                                         
+                                           <option value="8648">Hagen, JoyLynn</option>
+                                         
+                                           <option value="8670">Hansen, Chase</option>
+                                         
+                                           <option value="3356">Hobbs, Ty</option>
+                                         
+                                           <option value="6671">Hoffman, Crystal</option>
+                                         
+                                           <option value="6875">Hudson, Lamar</option>
+                                         
+                                           <option value="5920">Huisman, Sue</option>
+                                         
+                                           <option value="8523">Hutton, Melody</option>
+                                         
+                                           <option value="3358">Johnston, Jeff</option>
+                                         
+                                           <option value="6673">Jones, Kate</option>
+                                         
+                                           <option value="3359">Kauzlarich, Cody</option>
+                                         
+                                           <option value="6677">Kenyon, Amy</option>
+                                         
+                                           <option value="3360">Klein, Matthew</option>
+                                         
+                                           <option value="8645">Knutson, Tonja</option>
+                                         
+                                           <option value="8712">Kotz, Ryan</option>
+                                         
+                                           <option value="8671">Leonard, Nathan</option>
+                                         
+                                           <option value="6674">Mattes, Charity</option>
+                                         
+                                           <option value="5636">McKeever, Haili</option>
+                                         
+                                           <option value="3365">McVay, Michelle</option>
+                                         
+                                           <option value="3366">Meyer, Sara</option>
+                                         
+                                           <option value="8511">Miller, Kelsey</option>
+                                         
+                                           <option value="6732">Murphy, Cary</option>
+                                         
+                                           <option value="8668">Neff, Ethan</option>
+                                         
+                                           <option value="8679">Ott, Matt</option>
+                                         
+                                           <option value="5264">Ouverson, Shelly</option>
+                                         
+                                           <option value="7169">Padgett, Kristin</option>
+                                         
+                                           <option value="8649">Pepper, Jim</option>
+                                         
+                                           <option value="6670">Pollard, Stephanie</option>
+                                         
+                                           <option value="3369">Randall, Jennifer</option>
+                                         
+                                           <option value="8503">Rizer, Laura</option>
+                                         
+                                           <option value="6364">Schenimann, Jerod</option>
+                                         
+                                           <option value="5921">Schooley, Courtney</option>
+                                         
+                                           <option value="8359">Schroeder, Mary</option>
+                                         
+                                           <option value="6676">Schuh, Morgan</option>
+                                         
+                                           <option value="8650">Schultz, Michael</option>
+                                         
+                                           <option value="3371">Scott, Heather</option>
+                                         
+                                           <option value="6580">Sigwarth, Kim</option>
+                                         
+                                           <option value="3439">Smith, Rhonda</option>
+                                         
+                                           <option value="3375">Stanford, Jason</option>
+                                         
+                                           <option value="8651">Stucker, Dustin</option>
+                                         
+                                           <option value="8680">Swanson, Dan</option>
+                                         
+                                           <option value="3377">Swenson, Jennifer</option>
+                                         
+                                           <option value="6041">Terry, Andrew</option>
+                                         
+                                           <option value="6867">Udelhoven, Mackenzie</option>
+                                         
+                                           <option value="3381">Vancil, Brad</option>
+                                         
+                                           <option value="8560">Vickroy, Adam</option>
+                                         
+                                           <option value="8646">Williams, Bryan</option>
+                                         
+                                           <option value="8669">Wolf, Kaliegh</option>
+                                         
+                                           <option value="3510">Wood, Kendall</option>
+                                         </select>
+                             </strong></span></div></td>
+                           </tr>
+                           <tr>
+                             <td bgcolor="345888"><div align="center"><span class="style7"><strong>Med Crew 3</strong>:<strong> <br />
+                                       <select name="a114" class="dropdownfieldsmall"  id="a114" >
+       
+                                         <option selected="selected" value="">Contains Everyone</option>
+                                         <option value="0">Specialty Crew 3</option>
+                                         
+                                           <option value="6874">Boyer, Kara</option>
+                                         
+                                           <option value="8641">Brown, Carrie</option>
+                                         
+                                           <option value="8404">Brown, Mary</option>
+                                         
+                                           <option value="3312">Cochran, Dennis</option>
+                                         
+                                           <option value="8642">Dahle, Neil</option>
+                                         
+                                           <option value="6678">Damstetter, Brianna</option>
+                                         
+                                           <option value="6363">Davis, Hannah</option>
+                                         
+                                           <option value="5919">Denney, Molly</option>
+                                         
+                                           <option value="6866">Devries, Jenna</option>
+                                         
+                                           <option value="8647">Dye, Gordon</option>
+                                         
+                                           <option value="3380">Eason, Sarah</option>
+                                         
+                                           <option value="3355">Formaro, Ashli</option>
+                                         
+                                           <option value="8643">Goedken, Heather</option>
+                                         
+                                           <option value="8708">Gonzales, Nik</option>
+                                         
+                                           <option value="3353">Greenlee, Kara</option>
+                                         
+                                           <option value="3354">Hadwiger, Jeff</option>
+                                         
+                                           <option value="8644">Hagen, Dawn</option>
+                                         
+                                           <option value="3344">Hagen, Emily</option>
+                                         
+                                           <option value="8648">Hagen, JoyLynn</option>
+                                         
+                                           <option value="8670">Hansen, Chase</option>
+                                         
+                                           <option value="3356">Hobbs, Ty</option>
+                                         
+                                           <option value="6671">Hoffman, Crystal</option>
+                                         
+                                           <option value="6875">Hudson, Lamar</option>
+                                         
+                                           <option value="5920">Huisman, Sue</option>
+                                         
+                                           <option value="8523">Hutton, Melody</option>
+                                         
+                                           <option value="3358">Johnston, Jeff</option>
+                                         
+                                           <option value="6673">Jones, Kate</option>
+                                         
+                                           <option value="3359">Kauzlarich, Cody</option>
+                                         
+                                           <option value="6677">Kenyon, Amy</option>
+                                         
+                                           <option value="3360">Klein, Matthew</option>
+                                         
+                                           <option value="8645">Knutson, Tonja</option>
+                                         
+                                           <option value="8712">Kotz, Ryan</option>
+                                         
+                                           <option value="8671">Leonard, Nathan</option>
+                                         
+                                           <option value="6674">Mattes, Charity</option>
+                                         
+                                           <option value="5636">McKeever, Haili</option>
+                                         
+                                           <option value="3365">McVay, Michelle</option>
+                                         
+                                           <option value="3366">Meyer, Sara</option>
+                                         
+                                           <option value="8511">Miller, Kelsey</option>
+                                         
+                                           <option value="6732">Murphy, Cary</option>
+                                         
+                                           <option value="8668">Neff, Ethan</option>
+                                         
+                                           <option value="8679">Ott, Matt</option>
+                                         
+                                           <option value="5264">Ouverson, Shelly</option>
+                                         
+                                           <option value="7169">Padgett, Kristin</option>
+                                         
+                                           <option value="8649">Pepper, Jim</option>
+                                         
+                                           <option value="6670">Pollard, Stephanie</option>
+                                         
+                                           <option value="3369">Randall, Jennifer</option>
+                                         
+                                           <option value="8503">Rizer, Laura</option>
+                                         
+                                           <option value="6364">Schenimann, Jerod</option>
+                                         
+                                           <option value="5921">Schooley, Courtney</option>
+                                         
+                                           <option value="8359">Schroeder, Mary</option>
+                                         
+                                           <option value="6676">Schuh, Morgan</option>
+                                         
+                                           <option value="8650">Schultz, Michael</option>
+                                         
+                                           <option value="3371">Scott, Heather</option>
+                                         
+                                           <option value="6580">Sigwarth, Kim</option>
+                                         
+                                           <option value="3439">Smith, Rhonda</option>
+                                         
+                                           <option value="3375">Stanford, Jason</option>
+                                         
+                                           <option value="8651">Stucker, Dustin</option>
+                                         
+                                           <option value="8680">Swanson, Dan</option>
+                                         
+                                           <option value="3377">Swenson, Jennifer</option>
+                                         
+                                           <option value="6041">Terry, Andrew</option>
+                                         
+                                           <option value="6867">Udelhoven, Mackenzie</option>
+                                         
+                                           <option value="3381">Vancil, Brad</option>
+                                         
+                                           <option value="8560">Vickroy, Adam</option>
+                                         
+                                           <option value="8646">Williams, Bryan</option>
+                                         
+                                           <option value="8669">Wolf, Kaliegh</option>
+                                         
+                                           <option value="3510">Wood, Kendall</option>
+                                         </select>
+                             </strong></span></div></td>
+                             <td bgcolor="345888"><div align="center"><span class="style7"><strong>Med Crew 4</strong>:<strong> <br />
+                                      <select name="a115" class="dropdownfieldsmall"  id="a115" >
+       
+                                         <option selected="selected" value="">Contains Everyone</option>
+                                         <option value="0">Specialty Crew 4</option>
+                                         
+                                           <option value="6874">Boyer, Kara</option>
+                                         
+                                           <option value="8641">Brown, Carrie</option>
+                                         
+                                           <option value="8404">Brown, Mary</option>
+                                         
+                                           <option value="3312">Cochran, Dennis</option>
+                                         
+                                           <option value="8642">Dahle, Neil</option>
+                                         
+                                           <option value="6678">Damstetter, Brianna</option>
+                                         
+                                           <option value="6363">Davis, Hannah</option>
+                                         
+                                           <option value="5919">Denney, Molly</option>
+                                         
+                                           <option value="6866">Devries, Jenna</option>
+                                         
+                                           <option value="8647">Dye, Gordon</option>
+                                         
+                                           <option value="3380">Eason, Sarah</option>
+                                         
+                                           <option value="3355">Formaro, Ashli</option>
+                                         
+                                           <option value="8643">Goedken, Heather</option>
+                                         
+                                           <option value="8708">Gonzales, Nik</option>
+                                         
+                                           <option value="3353">Greenlee, Kara</option>
+                                         
+                                           <option value="3354">Hadwiger, Jeff</option>
+                                         
+                                           <option value="8644">Hagen, Dawn</option>
+                                         
+                                           <option value="3344">Hagen, Emily</option>
+                                         
+                                           <option value="8648">Hagen, JoyLynn</option>
+                                         
+                                           <option value="8670">Hansen, Chase</option>
+                                         
+                                           <option value="3356">Hobbs, Ty</option>
+                                         
+                                           <option value="6671">Hoffman, Crystal</option>
+                                         
+                                           <option value="6875">Hudson, Lamar</option>
+                                         
+                                           <option value="5920">Huisman, Sue</option>
+                                         
+                                           <option value="8523">Hutton, Melody</option>
+                                         
+                                           <option value="3358">Johnston, Jeff</option>
+                                         
+                                           <option value="6673">Jones, Kate</option>
+                                         
+                                           <option value="3359">Kauzlarich, Cody</option>
+                                         
+                                           <option value="6677">Kenyon, Amy</option>
+                                         
+                                           <option value="3360">Klein, Matthew</option>
+                                         
+                                           <option value="8645">Knutson, Tonja</option>
+                                         
+                                           <option value="8712">Kotz, Ryan</option>
+                                         
+                                           <option value="8671">Leonard, Nathan</option>
+                                         
+                                           <option value="6674">Mattes, Charity</option>
+                                         
+                                           <option value="5636">McKeever, Haili</option>
+                                         
+                                           <option value="3365">McVay, Michelle</option>
+                                         
+                                           <option value="3366">Meyer, Sara</option>
+                                         
+                                           <option value="8511">Miller, Kelsey</option>
+                                         
+                                           <option value="6732">Murphy, Cary</option>
+                                         
+                                           <option value="8668">Neff, Ethan</option>
+                                         
+                                           <option value="8679">Ott, Matt</option>
+                                         
+                                           <option value="5264">Ouverson, Shelly</option>
+                                         
+                                           <option value="7169">Padgett, Kristin</option>
+                                         
+                                           <option value="8649">Pepper, Jim</option>
+                                         
+                                           <option value="6670">Pollard, Stephanie</option>
+                                         
+                                           <option value="3369">Randall, Jennifer</option>
+                                         
+                                           <option value="8503">Rizer, Laura</option>
+                                         
+                                           <option value="6364">Schenimann, Jerod</option>
+                                         
+                                           <option value="5921">Schooley, Courtney</option>
+                                         
+                                           <option value="8359">Schroeder, Mary</option>
+                                         
+                                           <option value="6676">Schuh, Morgan</option>
+                                         
+                                           <option value="8650">Schultz, Michael</option>
+                                         
+                                           <option value="3371">Scott, Heather</option>
+                                         
+                                           <option value="6580">Sigwarth, Kim</option>
+                                         
+                                           <option value="3439">Smith, Rhonda</option>
+                                         
+                                           <option value="3375">Stanford, Jason</option>
+                                         
+                                           <option value="8651">Stucker, Dustin</option>
+                                         
+                                           <option value="8680">Swanson, Dan</option>
+                                         
+                                           <option value="3377">Swenson, Jennifer</option>
+                                         
+                                           <option value="6041">Terry, Andrew</option>
+                                         
+                                           <option value="6867">Udelhoven, Mackenzie</option>
+                                         
+                                           <option value="3381">Vancil, Brad</option>
+                                         
+                                           <option value="8560">Vickroy, Adam</option>
+                                         
+                                           <option value="8646">Williams, Bryan</option>
+                                         
+                                           <option value="8669">Wolf, Kaliegh</option>
+                                         
+                                           <option value="3510">Wood, Kendall</option>
+                                         </select>
+                             </strong></span></div></td>
+                           </tr>
+                           <tr>
+                             <td bgcolor="345888"><div align="center"><span class="style7"><strong><span class="style15">*</span>Pilot</strong>:<strong> <br />
+                                       <select name="a4" class="dropdownfieldsmall"  id="a4" >
+       
+                                         <option selected="selected" style="background-color:Yellow" value="">Select Your Pilot</option>
+                                         <option style="background-color:Red" value="5614">No Pilot, Ground Transport</option>
+                                         
+                                           <option value="6784">Brown, Kit</option>
+                                         
+                                           <option value="7302">Cambron, Chad</option>
+                                         
+                                           <option value="7174">Dawson, Bill</option>
+                                         
+                                           <option value="5622">Fewins, Gary</option>
+                                         
+                                           <option value="7008">Gross, Robert</option>
+                                         
+                                           <option value="8698">Hutmacher, Aaron</option>
+                                         
+                                           <option value="8553">Mackay, James</option>
+                                         
+                                           <option value="8700">Venezia, Nick</option>
+                                         
+                                           <option value="3321">Wade, Scott</option>
+                                         
+                                           <option value="3322">Wahlig, Joe</option>
+                                         
+                                           <option value="8699">Wakefield, James</option>
+                                         
+                                           <option value="3323">Winter, Ryan</option>
+                                         </select>
+                             </strong></span></div></td>
+                             <td bgcolor="345888"><div align="center"><span class="style7"><strong><span class="style15">*</span>Comm Spec 1</strong>:<strong> <br />
+                                       <select name="a7" class="dropdownfieldsmall"  id="a7" >
+       
+                                         <option selected="selected" style="background-color:Yellow" value="">Select Your Comm Spec</option>
+                                         <option value="0" style="background-color:Red">Not Listed</option>
+                                         
+                                           <option value="Albaugh, Andrew">Albaugh, Andrew</option>
+                             
+                                           <option value="Borland, Kylie">Borland, Kylie</option>
+                             
+                                           <option value="Caster, Hannah">Caster, Hannah</option>
+                             
+                                           <option value="Chilton, Angie">Chilton, Angie</option>
+                             
+                                           <option value="Cochran, Dennis">Cochran, Dennis</option>
+                             
+                                           <option value="Coonrod, Katelyn">Coonrod, Katelyn</option>
+                             
+                                           <option value="Deskin, Larry">Deskin, Larry</option>
+                             
+                                           <option value="Drees-Dunn, Kandace">Drees-Dunn, Kandace</option>
+                             
+                                           <option value="Hardt, Ryan">Hardt, Ryan</option>
+                             
+                                           <option value="Hartgers, Sandra">Hartgers, Sandra</option>
+                             
+                                           <option value="Lawler, Mikaela">Lawler, Mikaela</option>
+                             
+                                           <option value="Mortvedt, Tyler">Mortvedt, Tyler</option>
+                             
+                                           <option value="Rothmeyer, Kyle">Rothmeyer, Kyle</option>
+                             
+                                           <option value="Sparks, Diane">Sparks, Diane</option>
+                             
+                                           <option value="Spencer, Jason">Spencer, Jason</option>
+                             
+                                           <option value="Spencer, Jeff">Spencer, Jeff</option>
+                             
+                                           <option value="Strickler, Douglas">Strickler, Douglas</option>
+                             
+                                           <option value="Tysdal, Tomme">Tysdal, Tomme</option>
+                             
+                                           <option value="Vaughn, Erin">Vaughn, Erin</option>
+                             
+                                           <option value="Walker, Lisa">Walker, Lisa</option>
+                             
+                                           <option value="Williams, Melissa">Williams, Melissa</option>
+                             
+                                           <option value="Willis, Greg">Willis, Greg</option>
+                             </select>
+                             </strong></span></div></td>
+                           </tr>
+                           <tr>
+                             <td bgcolor="#345888"><div align="center"><span class="style7"><strong><span class="style15">*</span>Comm Spec 2</strong>:<strong> <br />
+                                       <select name="a133" class="dropdownfieldsmall"  id="a133" >
+       
+                                       <option selected="selected"  value="">Select Your Comm Spec</option>
+                                       <option value="0" style="background-color:Red">Not Listed</option>
+                                       
+                                         <option value="8678">Chilton, Angie</option>
+                                       
+                                         <option value="8574">Lawler, Mikaela</option>
+                                       
+                                         <option value="8606">Nadine Sechovec, Nadine Sechovec</option>
+                                       
+                                         <option value="8418">Spencer, Jeff</option>
+                                       
+                                         <option value="8575">Strickler, Douglas</option>
+                                       
+                                         <option value="3338">Tysdal, Tomme</option>
+                                       
+                                         <option value="8582">Walker, Lisa</option>
+                                       
+                                         <option value="8612">Williams, Melissa</option>
+                                       </select>
+                             </strong></span></div></td>
+                             <td bgcolor="#345888"><div align="center"><span class="style7"><strong><span class="style15">*</span>Comm Spec 3</strong>:<strong> <br />
+                                       <select name="a134" class="dropdownfieldsmall"  id="a134" >
+       
+                                       <option selected="selected"  value="">Select Your Comm Spec</option>
+                                       <option value="0" style="background-color:Red">Not Listed</option>
+                                       
+                                         <option value="8678">Chilton, Angie</option>
+                                       
+                                         <option value="8574">Lawler, Mikaela</option>
+                                       
+                                         <option value="8606">Nadine Sechovec, Nadine Sechovec</option>
+                                       
+                                         <option value="8418">Spencer, Jeff</option>
+                                       
+                                         <option value="8575">Strickler, Douglas</option>
+                                       
+                                         <option value="3338">Tysdal, Tomme</option>
+                                       
+                                         <option value="8582">Walker, Lisa</option>
+                                       
+                                         <option value="8612">Williams, Melissa</option>
+                                       </select>
+                             </strong></span></div></td>
+                           </tr>
+                           <tr>
+                             <td colspan="2" bgcolor="5087B4">&nbsp;</td>
+                           </tr>
+                           <tr>
+                             <td colspan="2" bgcolor="345888"><div align="center"><span class="style7"><strong><span class="style15">*</span>Activity of Flight</strong>:</span> <strong>
+                               <select name="a9" id="a9"  onchange="showHideAbortedOptions()" >
+       
+                                 <option selected="selected" value="" style="background-color:Yellow">Please Select the Appropriate Activity of Flight</option>
+                                 <option value="Completed">Completed By Air</option>
+                                 <option value="Completed">Completed By Ground</option>
+                               <option value="Completed">Aborted Flight-Completed by Ground</option>
+                               <option value="Completed">Aborted Flight-Patient Care Provided Only</option>
+                               <option value="Aborted">Aborted Flight-Returned to Base/No Care/No Transport</option>
+                             </select>
+                             </strong></div></td>
+                           </tr>
+                           <tr id="abortedOptionsList" style="display:none;">
+                             <td colspan="2" bgcolor="345888"><div align="center"><strong><span class="style14">If Aborted, Why?: </span></strong>
+                               <select name="a10" id="a10" >
+       
+                                 <option value="" selected="selected"></option>
+                                 <option value="N/A">N/A</option>
+                                 <option value="Maintenance">Maintenance</option>
+                                 <option value="Weather">Weather</option>
+                                 <option value="Referring / Receiving Request">Referring / Receiving Request</option>
+                                 <option value="Safety Issue">Safety Issue</option>
+                                 <option value="Administrative Decision">Administrative Decision</option>
+                               </select> <input name="a43" type="hidden" value="Yes" id="a43"  /> <input name="a44" type="hidden" value="Click Here" id="a44"  /> <input name="a45" type="hidden" value="Completed" id="a45"  /> <input name="a46" type="hidden" value="Not Completed" id="a46"  />
+       </div></td>
+                           </tr>
+                           
+                           <tr>
+                             <td height="26" colspan="2" bgcolor="345888"><div align="center"><span class="style7"><strong><span class="style15">*</span>Were cabin temperatures recorded?</strong></span> <span class="style7">
+                               <input name="isTempRecorded" id="isTempRecorded"  type="radio" value="Yes" onclick="showHideCabinTemps()"  />
+       Yes
+       <input name="isTempRecorded" id="isTempRecorded"  type="radio" value="No" checked="checked"  onclick="showHideCabinTemps()"  />
+       No </span></div><br />
+       <div class="style7" align="center"><font color="FFFF00">(Normal Range 50 &ndash; 95 degrees F)</font></div><div id="showHideTempDiv" style="display:none">
+                                     <p></p>
+                                     <div id="containerForTemps">
+                                       <div class="tempShow">
+                                             <span>Temperature: </span><input id="cabinTemp1" name="cabinTemp1" onChange="addNewCabinTemp(1)"/>
+                                             <span>Time: </span>
+                                             <input id="cabinTempTime1" name="cabinTempTime1"/>
+                                         </div>
+                                   </div><p></p><p></p>
+                                   <div align="center"><span>Mitigating Comments<br />
+                                   </span>
+                                     <textarea id="cabinTempNote" cols="40" rows="5"  name="cabinTempNote"></textarea></div></div></td>
+                           </tr>
+                           
+                         </table>
+                         
+                         <table width="100%" border="1">
+                           <tr>
+                             <td bgcolor="345888"><div align="center" class="style7"><strong><span class="style15">*</span>Transport Type </strong></div></td>
+                           </tr>
+                           <tr>
+                             <td bgcolor="345888"><table width="100%" border="1">
+                               <tr>
+                                 <td width="32%" height="24" bgcolor="#5187B5"><div align="center">
+                                     <input name="a8" id="a8"  type="radio" value="Scene" />
+                                 <span class="style12"> Scene </span></div></td>
+                                 <td width="36%" bgcolor="#5187B5"><div align="center">
+                                     <input name="a8" id="a8"  type="radio" value="Interfacility" />
+                                 <span class="style12"> Interfacility </span></div></td>
+                                 <td width="32%" bgcolor="#5187B5"><div align="center">
+                                   <input name="a8" id="a8"  type="radio" value="Other" />
+                                   <span class="style10"> Other </span></div></td>
+                               </tr>
+                             </table></td>
+                           </tr>
+                         </table>
+                         
+       <table width="100%" border="1">
+         <tr>
+           <td bgcolor="#345888">
+           <div align="center" class="style7"><strong><span class="style15">*</span>Run Times  </strong></div><table width="100%" border="0">
+             <tr>
+               <td width="36%" bgcolor="#5187B5"><div align="right" class="style12">Assigned:</div></td>
+               <td width="64%" bgcolor="#5187B5"><div align="left">
+                 <input name="a116" type="text" id="a116" onBlur="liftOffTimesChanged()" />
+               </div></td>
+             </tr>
+             <tr>
+               <td bgcolor="#666666"><div align="right" class="style12">En Route:</div></td>
+               <td bgcolor="#666666"><div align="left">
+                 <input name="a117" type="text" id="a117" onBlur="liftOffTimesChanged()"/>
+               </div></td>
+             </tr>
+             <tr>
+               <td bgcolor="#5187B5"><div align="right" class="style12">On Scene:</div></td>
+               <td bgcolor="#5187B5"><input name="a118" type="text" id="a118" onBlur="timeOnSceneChanged()"/></td>
+             </tr>
+             <tr>
+               <td bgcolor="#666666"><div align="right" class="style12">Pt. Contact:</div></td>
+               <td bgcolor="#666666"><input name="a119" type="text" id="a119" /></td>
+             </tr>
+             <tr>
+               <td bgcolor="#5187B5"><div align="right" class="style12">Depart:</div></td>
+               <td bgcolor="#5187B5"><input name="a120" type="text" id="a120" onBlur="timeOnSceneChanged()"/></td>
+             </tr>
+             <tr>
+               <td bgcolor="#666666"><div align="right" class="style12">Arrive Destination:</div></td>
+               <td bgcolor="#666666"><input name="a121" type="text" id="a121" onBlur="destinationReceivingHspChange()"/></td>
+             </tr>
+             <tr>
+               <td bgcolor="#5187B5"><div align="right" class="style12">Depart Receiving Hospital:</div></td>
+               <td bgcolor="#5187B5"><input name="a122" type="text" id="a122" onBlur="destinationReceivingHspChange()"/></td>
+             </tr>
+             <tr>
+               <td bgcolor="#666666"><div align="right" class="style12">Arrive at Base:</div></td>
+               <td bgcolor="#666666"><input name="a123" type="text" id="a123" /></td>
+             </tr>
+           </table>
+           <table width="100%" border="1">
+             <tr>
+               <td colspan="2" bgcolor="#5187B5"><div align="center"><strong><span class="style7">Delay @ Receiving Hospital 
+                       <input name="a124" id="a124" type="text" size="5" readonly/>
+               </span></strong></div></td>
+               </tr>
+             <tr id="delayRecHospTR" style="display:none">
+               <td colspan="2" bgcolor="#5187B5"><div align="center">
+                 <textarea name="a125" onkeydown="limitText(this.form.a125,this.form.countdown6,4000);" id="a125" cols="45" onkeyup="limitText(this.form.a125,this.form.countdown6,4000);" rows="0" >N/A</textarea>
+                 <br />
+                 <font size="1">(Maximum characters: 4000)<br />
+       You have
+       <input name="countdown6" id="countdown6"  type="text" value="4000" readonly="true"  size="4"  />
+       characters left.</font></div></td>
+               </tr>
+             <tr>
+               <td width="50%" bgcolor="#5187B5"><div align="center">
+                 <div align="right" class="style12">
+                   <div align="center">Lift Off Time:
+                     <input name="a126" type="text" id="a126" size="4"  readonly="readonly"/>
+                   </div>
+                 </div>
+               </div></td>
+               <td width="50%" bgcolor="#5187B5"><div align="center">
+                 <div align="right" class="style12">
+                   <div align="center">Time On Scene:            
+                     <input name="a128" type="text" id="a128" size="4" readonly />
+                   </div>
+                 </div>
+               </div></td>
+             </tr>
+             <tr id="tableRowForLOTOS" style="display:none">
+               <td bgcolor="#5187B5"><div align="center" id="divForLOTDropDown" style="display:none">
+                 <div align="right" class="style12">
+                   <div align="center">Why:
+                     <select name="a127" id="a127">
+                     <option value="" selected="selected"></option>
+                     <option value="None">None</option>
+                     <option value="Adding Fuel">Adding Fuel</option>
+                     <option value="Bio Clean-Up">Bio Clean-Up</option>
+                     <option value="Equipment">Equipment</option>
+                     <option value="Maintenance">Maintenance</option>
+                     <option value="Mechanical">Mechanical</option>
+                     <option value="Pilot Delayed">Pilot Delayed</option>
+                     <option value="Medical Staff Delayed">Medical Staff Delayed</option>
+                     <option value="Change of Medical Staff">Change of Medical Staff</option>
+                     <option value="Change of Pilot">Change of Pilot</option>
+                     <option value="Pilot Checking Weather">Pilot Checking Weather</option>
+                     <option value="Pilot Need for Information">Pilot Needed More Information</option>
+                     <option value="Pager Malfunction">Pager Malfunction</option>
+                     <option value="Removing Winter Covers">Removing Winter Covers</option>
+                     <option value="Removing Aircraft From Hanger">Removing Aircraft From Hanager</option>
+                     </select>
+       </div>
+                 </div>
+               </div></td>
+               <td bgcolor="#5187B5"><div align="center" id="divForTOSDrop" style="display:none">
+                 <div align="right" class="style12">
+                   <div align="center">Why:
+                     <select name="a129" id="a129">
+                         <option value="" selected="selected"></option>
+                         <option value="None">None</option>
+                         <option value="Adverse Terrain">Adverse Terrain</option>
+                         <option value="Traveled by Ground Vehicle to Patient">Traveled by Ground Vehicle to Patient</option>
+                         <option value="Extended Extrication">Extended Extrication</option>
+                         <option value="Full Arrest">Full Arrest</option>
+                         <option value="Combative Patient">Combative Patient</option>
+                         <option value="Treatment of Scene">Treatment of Scene</option>
+                         <option value="Triage">Triage</option>
+                         <option value="Waiting for Paperwork">Waiting for Paperwork</option>
+                         <option value="Other Hospital Delay">Other Hospital Delay</option>
+                         <option value="Fuel">Fuel</option>
+                         <option value="Other">Other (Explain in Comments)</option>
+                       </select>
+                   </div>
+                 </div>
+               </div></td>
+             </tr>
+           </table>
+               </td>
+         </tr>
+       </table>
+       
+                         
+                         <table width="100%" border="1">
+                           <tr>
+                             <td bgcolor="345888"><div align="center" class="style7"><strong><span class="style15">*</span>VFR or IFR </strong></div></td>
+                           </tr>
+                           <tr>
+                             <td bgcolor="345888"><table width="100%" border="1">
+                               <tr>
+                                 <td width="33%" height="24" bgcolor="#5187B5"><div align="center">
+                                   <input name="a98" id="a98"  type="radio" value="VFR" />
+                                   <span class="style12"> VFR </span></div></td>
+                                 <td width="33%" bgcolor="#5187B5"><div align="center">
+                                   <input name="a98" id="a98"  type="radio" value="IFR" />
+                                   <span class="style12"> IFR </span></div></td>
+                                 <td width="34%" bgcolor="#5187B5"><div align="center">
+                                   <input name="a98" id="a98"  type="radio" value="N/A" checked="checked"  />
+                                   <span class="style12"> N/A </span></div></td>
+                               </tr>
+                             </table></td>
+                           </tr>
+                         </table>
+                        
+                         <table width="100%" border="1">
+                           <tr>
+                             <td bgcolor="345888"><div align="center" class="style7"><strong><span class="style15">*</span>NVGs</strong></div></td>
+                           </tr>
+                           <tr>
+                             <td bgcolor="345888"><table width="100%" border="1">
+                                 <tr>
+                                   <td width="33%" height="24" bgcolor="#5187B5"><div align="center">
+                                       <input name="a99" id="a99"  type="radio" value="Yes" onclick="showHideNightVision()"  />
+                                       <span class="style12"> Yes </span></div></td>
+                                   <td width="33%" bgcolor="#5187B5"><div align="center">
+                                       <input name="a99" id="a99"  type="radio" value="No" onclick="showHideNightVision() "  />
+                                       <span class="style12"> No </span></div></td>
+                                   <td width="34%" bgcolor="#5187B5"><div align="center">
+                                     <input name="a99" id="a99"  type="radio" value="N/A" checked="checked"  onclick="showHideNightVision() "  />
+                                     <span class="style12"> N/A</span></div></td>
+                                 </tr>
+                                 
+                                 <tr id="underNightVision" style="display:none">
+                                   <td height="24" colspan="3" bgcolor="#5187B5"><div align="center">
+                                     <table width="100%" border="0">
+                                       <tr>
+                                         <td><div id="med1nightvision">
+                               <input type="checkbox" id="med1nightcheck" name="med1nightcheck" value="Yes" onClick="checkMed1NightChecked()"/><span id="med1nightvisionname"></span>
+                               <span id="nvOcc1Text" style="display:none">Operation(s):</span>
+                               <select id="med1nightocc" name="med1nightocc" style="display:none">
+                                   <option value="1">1</option>
+                                   <option value="2">2</option>
+                                   <option value="3">3</option>
+                                   <option value="4">4</option>
+                                   <option value="5">5</option>
+                                   <option value="6">6</option>
+                                   <option value="7">7</option>
+                                   <option value="8">8</option>
+                                   <option value="9">9</option>
+                                   <option value="10">10</option>
+                               </select>
+                               <div id="med1nightdesc" style="display:none">
+                                   <textarea id="med1nightdesctext" name="med1nightdesctext"></textarea>
+                                   
+                               </div>
+                           </div></td>
+                                         <td><div id="med2nightvision">
+                               <input type="checkbox" id="med2nightcheck" name="med2nightcheck" value="Yes" onClick="checkMed2NightChecked()"/><span id="med2nightvisionname"></span>
+                               <span id="nvOcc2Text" style="display:none">Operation(s):</span>
+                               <select id="med2nightocc" name="med2nightocc" style="display:none">
+                                   <option value="1">1</option>
+                                   <option value="2">2</option>
+                                   <option value="3">3</option>
+                                   <option value="4">4</option>
+                                   <option value="5">5</option>
+                                   <option value="6">6</option>
+                                   <option value="7">7</option>
+                                   <option value="8">8</option>
+                                   <option value="9">9</option>
+                                   <option value="10">10</option>
+                               </select>
+                               <div id="med2nightdesc" style="display:none">
+                                   <textarea id="med2nightdesctext" name="med2nightdesctext"></textarea>
+                                   
+                               </div>
+                           </div></td>
+                                       </tr>
+                                     </table>
+                                   </div></td>
+                                 </tr>
+                                 
+                             </table></td>
+                           </tr>
+                         </table>
+                         <table width="100%" border="1">
+                           <tr>
+                             <td bgcolor="345888"><div align="center" class="style7"><strong><span class="style15">*</span>Stand By Request </strong></div></td>
+                           </tr>
+                           <tr>
+                             <td bgcolor="345888"><table width="100%" border="1">
+                                 <tr>
+                                   <td width="32%" height="24" bgcolor="#5187B5"><div align="center">
+                                       <input name="a92" type="radio" value="Auto Launch" id="a92"  />
+                                       <span class="style12"> Auto Launch</span></div></td>
+                                   <td width="36%" bgcolor="#5187B5"><div align="center">
+                                       <input name="a92" type="radio" value="Delayed Launch" id="a92"  />
+                                       <span class="style12">Delayed Launch</span></div></td>
+                                   <td width="32%" bgcolor="#5187B5"><div align="center">
+                                     <input name="a92" type="radio" value="No" checked="checked"  id="a92"  />
+                                     <span class="style10"> No </span></div></td>
+                                 </tr>
+                             </table></td>
+                           </tr>
+                         </table>
+                         <table width="100%" border="1">
+                           <tr>
+                             <td width="50%" bgcolor="345888"><div align="center" class="style7"><strong><span class="style15">*</span>Time of Flight </strong></div></td>
+                             <td width="50%" bgcolor="345888"><div align="center" class="style7"><strong><span class="style15">*</span>Predesignated LZ </strong></div></td>
+                           </tr>
+                           <tr>
+                             <td colspan="2" bgcolor="345888"><table width="100%" border="1">
+                                 <tr>
+                                   <td width="25%" bgcolor="#5187B5"><table width="100%" border="0">
+                                     <tr>
+                                       <td width="50%" bgcolor="#FF6600"><div align="center">
+                                         <input name="a70" id="a70"  type="radio" value="Day Flight" />
+                                       <span class="style12"> Day Flight</span></div></td>
+                                       <td width="50%" bgcolor="#003333"><div align="center">
+                                         <input name="a70" id="a70"  type="radio" value="Night Flight" />
+                                       <span class="style12"> Night Flight </span></div></td>
+                                     </tr>
+                                   </table></td>
+                                   <td width="25%" bgcolor="#5187B5"><table width="100%" border="0">
+                                     <tr>
+                                       <td width="50%" bgcolor="#009900"><div align="center">
+                                         <input name="a71" id="a71"  type="radio" value="Yes" />
+                                       <span class="style12"> Yes </span></div></td>
+                                       <td width="50%" bgcolor="#CC0000"><div align="center">
+                                         <input name="a71" id="a71"  type="radio" value="No" />
+                                       <span class="style12"> No </span></div></td>
+                                     </tr>
+                                   </table></td>
+                                 </tr>
+                             </table></td>
+                           </tr>
+                         </table>
+                         <table width="100%" border="1">
+                           <tr>
+                             <td bgcolor="345888"><div align="center" class="style7"><strong><span class="style15">*</span>Patient Age Category </strong><span class="style3">
+                               <input name="a50" type="hidden" id="a50" value="Yes" />
+                             </span></div></td>
+                           </tr>
+                           <tr>
+                             <td bgcolor="345888"><table width="100%" border="1">
+                               <tr>
+                                 <td width="25%" height="24" bgcolor="#5187B5"><div align="center">
+                                     <input name="a78" id="a78"  type="radio" value="Adult" />
+                                 <span class="style12"> Adult </span></div></td>
+                                 <td width="25%" bgcolor="#5187B5"><div align="center">
+                                     <input name="a78" id="a78"  type="radio" value="Pediatric" />
+                                 <span class="style12"> Pediatric </span></div></td>
+                                 <td width="23%" bgcolor="#5187B5"><div align="center">
+                                     <input name="a78" id="a78"  type="radio" value="Neonatal" />
+                                 <span class="style10"> Neonatal </span></div></td>
+                                 <td width="27%" bgcolor="#5187B5"><div align="center">
+                                   <input name="a78" id="a78"  type="radio" value="N/A" />
+                                 <span class="style10"> N/A </span></div></td>
+                               </tr>
+                             </table></td>
+                           </tr>
+                         </table>
+                         <table width="100%" border="1">
+                           <tr>
+                             <td width="50%" bgcolor="#345989"><div align="center">
+                                 <input name="camtsOtherType" id="camtsOtherType"  type="radio" value="camts" onclick="showHideCamtsCat()"  />
+                                 <span class="style12"> CAMTS Category </span></div></td>
+                             <td width="50%" bgcolor="#345989"><div align="center">
+                                 <input name="camtsOtherType" id="camtsOtherType"  type="radio" value="other" onclick="showHideCamtsCat()"  />
+                                 <span class="style12"> Other Type </span></div></td>
+                           </tr>
+                         </table>
+                         <table width="100%" border="1" id="camtsCatTable" style="display:none;">
+                           <tr>
+                             <td bgcolor="345888"><div align="center" class="style7"><strong><span class="style15">*</span>CAMTS Category  </strong></div></td>
+                           </tr>
+                           <tr>
+                             <td bgcolor="345888"><table width="100%" border="1">
+                                 <tr>
+                                   <td width="25%" height="24" bgcolor="#5187B5"><div align="center">
+                                     <input name="a9a" id="a9a"  type="radio" value="Trauma" />
+                                   <span class="style12"> Trauma </span></div></td>
+                                   <td width="25%" bgcolor="#5187B5"><div align="center">
+                                       <input name="a9a" id="a9a"  type="radio" value="Cardiac" />
+                                   <span class="style12"> Cardiac </span></div></td>
+                                   <td width="23%" bgcolor="#5187B5"><div align="center">
+                                       <input name="a9a" id="a9a"  type="radio" value="Medical" />
+                                   <span class="style10"> Medical </span></div></td>
+                                   <td width="27%" bgcolor="#5187B5"><div align="center">
+                                       <input name="a9a" id="a9a"  type="radio" value="OB" />
+                                   <span class="style10"> OB </span></div></td>
+                                 </tr>
+                                 <tr>
+                                   <td height="24" bgcolor="#5187B5"><div align="center">
+                                     <input name="a9a" id="a9a"  type="radio" value="Surgical" />
+                                   <span class="style12">Surgical </span></div></td>
+                                   <td bgcolor="#5187B5"><div align="center">
+                                     <input name="a9a" id="a9a"  type="radio" value="Pulmonary" />
+                                   <span class="style12"> Pulmonary </span></div></td>
+                                   <td bgcolor="#5187B5"><div align="center">
+                                     <input name="a9a" id="a9a"  type="radio" value="Neuro" />
+                                   <span class="style10"> Neuro </span></div></td>
+                                   <td bgcolor="#5187B5"><div align="center">
+                                     <input name="a9a" id="a9a"  type="radio" value="Burn" />
+                                   <span class="style10"> Burn </span></div></td>
+                                 </tr>
+                             </table></td>
+                           </tr>
+                         </table>
+                         <table width="100%" border="1" id="camtsOtherTable" style="display:none;">
+                           <tr>
+                             <td bgcolor="345888"><div align="center" class="style7"><strong><span class="style15">*</span>Other Type  </strong></div></td>
+                           </tr>
+                           <tr>
+                             <td bgcolor="345888"><table width="100%" border="1">
+                                 <tr>
+                                   <td width="25%" height="24" bgcolor="#5187B5"><div align="center">
+                                     <input name="a9a" id="a9a"  type="radio" value="Specialty Flight" />
+                                     <span class="style12"> Specialty Flight</span></div></td>
+                                   <td width="25%" bgcolor="#5187B5"><div align="center">
+                                       <input name="a9a" id="a9a"  type="radio" value="Public Relations" />
+                                       <span class="style12"> Public Relations </span></div></td>
+                                   <td width="23%" bgcolor="#5187B5"><div align="center">
+                                       <input name="a9a" id="a9a"  type="radio" value="Relocation" />
+                                       <span class="style10"> Relocation </span></div></td>
+                                 </tr>
+                                 <tr>
+                                   <td height="24" bgcolor="#5187B5"><div align="center">
+                                       <input name="a9a" id="a9a"  type="radio" value="Search" />
+                                       <span class="style12">Search </span></div></td>
+                                   <td bgcolor="#5187B5"><div align="center">
+                                       <input name="a9a" id="a9a"  type="radio" value="Transplant" />
+                                       <span class="style12"> Organ Transplant </span></div></td>
+                                   <td bgcolor="#5187B5"><div align="center">
+                                     <input name="a9a" id="a9a"  type="radio" value="Training" />
+                                   <span class="style12"> Training </span></div></td>
+                                 </tr>
+                             </table></td>
+                           </tr>
+                         </table>
+                         
+                         <table width="100%" border="1" bgcolor="#CCCCCC">
+         <tr>
+           <td bgcolor="#345989"><div align="center" class="style24 style8">Multi-Disciplinary Report </div></td>
+         </tr>
+         <tr>
+           <td><table width="100%" border="0">
+           <tr>
+               <td>&nbsp;</td>
+             </tr
+             >
+             <tr bgcolor="5087B4">
+               <td><div align="left">
+                 <input type="checkbox" name="sr1" id="sr1" value="94" class="largerCheckbox" />
+                 <span class="style10">Hot Load</span> </div></td>
+             </tr>
+             
+             <tr bgcolor="666666">
+               <td><div align="left">
+                 <input type="checkbox" name="sr2" id="sr2" value="95" class="largerCheckbox" />
+                 <span class="style10">NICU Specialty Team</span> </div></td>
+             </tr>
+             
+             <tr>
+               <td>&nbsp;</td>
+             </tr>
+             <tr>
+               <td>
+                             <div align="center">
+                                 <textarea name="srcomments" onkeydown="limitText(this.form.srcomments,this.form.countdownsr,4000);" id="srcomments" cols="45" onkeyup="limitText(this.form.srcomments,this.form.countdownsr,4000);" rows="5" >N/A</textarea>
+                                 <br>
+                                 <font size="1">(Maximum characters: 4000)<br>
+                                 You have 
+                                 <input name="countdownsr" id="countdownsr"  type="text" value="4000" readonly="true"  size="4"  /> 
+                           characters left.</font></div></td>
+             </tr>
+           </table></td>
+         </tr>
+       </table>
+                         
+                         <table width="100%" border="1">
+                           <tr>
+                             <td width="14%" rowspan="5"><img src="/Images/aviation_issues.jpg" width="67" height="200" /></td>
+                             <td width="86%"><strong>Weather Issue</strong> 
+                               <input name="a15" id="a15"  type="radio" value="Yes" />
+                               <strong>Yes</strong> |
+                               <input name="a15" id="a15"  type="radio" value="No" checked="checked"  />
+       <strong>No</strong> </td>
+                           </tr>
+                           <tr>
+                             <td><strong>Any Maintenance Issue 
+                               <input name="a16" id="a16"  type="radio" value="Yes" />
+       Yes
+       <input name="a16" id="a16"  type="radio" value="No" checked="checked"  />
+       No</strong></td>
+                           </tr>
+                           <tr>
+                             <td><strong>Was there any other Aviation Issue
+                               </strong>
+                               <input name="a17" type="radio" value="Yes" id="a17"  />
+                               <strong>Yes</strong>
+       <input name="a17" type="radio" value="No" checked="checked"  id="a17"  />
+       <strong>No</strong></td>
+                           </tr>
+                           <tr>
+                             <td><strong>Explain any Safety Concern:</strong></td>
+                           </tr>
+                           <tr>
+                             <td>
+                               <div align="left">
+                                 <textarea name="a18" onkeydown="limitText(this.form.a18,this.form.countdown,4000);" id="a18" cols="45" onkeyup="limitText(this.form.a18,this.form.countdown,4000);" rows="5" >N/A</textarea>
+                                 <br>
+                                 <font size="1">(Maximum characters: 4000)<br>
+                                 You have 
+                                 <input name="countdown" id="countdown"  type="text" value="4000" readonly="true"  size="4"  /> 
+                             characters left.</font></div></td>
+                           </tr>
+                         </table>
+                         <table width="100%" border="1">
+                           <tr>
+                             <td width="15%" rowspan="7"><img src="/Images/operations_issue.jpg" width="67" height="240" /></td>
+                             <td width="85%"><strong>Any delay at the referring or receiving faclity?</strong>
+                                 <input name="a19" id="a19"  type="radio" value="Yes" />
+                                 <strong>Yes</strong>
+                                 <input name="a19" id="a19"  type="radio" value="No" checked="checked"  />
+                                 <strong>No</strong></td>
+                           </tr>
+                           <tr>
+                             <td><strong>Any missing medical equipment that should be readily available on the aircraft for patient care?
+                               <input name="a20" id="a20"  type="radio" value="Yes" />
+                               Yes
+                               <input name="a20" id="a20"  type="radio" value="No" checked="checked"  />
+                               No</strong></td>
+                           </tr>
+                           <tr>
+                             <td><strong>Landing Zone  Issues</strong>?
+                               <input name="a21" id="a21"  type="radio" value="Yes" />
+                                 <strong>Yes</strong>
+                                 <input name="a21" id="a21"  type="radio" value="No" checked="checked"  />
+                                 <strong>No</strong></td>
+                           </tr>
+                           <tr>
+                             <td><strong>Any CRM Issues?</strong>
+                                 <input name="a22" id="a22"  type="radio" value="Yes" />
+                                 <strong>Yes</strong>
+                                 <input name="a22" id="a22"  type="radio" value="No" checked="checked"  />
+                                 <strong>No</strong></td>
+                           </tr>
+                           <tr>
+                             <td><strong>Non- Medical Equipment Malfunction</strong>
+                                 <input name="a23" id="a23"  type="radio" value="Yes" />
+                                 <strong>Yes </strong>
+                                 <input name="a23" id="a23"  type="radio" value="No" checked="checked"  />
+                                 <strong>No</strong></td>
+                           </tr>
+                           <tr>
+                             <td><strong>Explain any Operational Issues:</strong></td>
+                           </tr>
+                           <tr>
+                             <td><textarea name="a24" onkeydown="limitText(this.form.a24,this.form.countdown1,4000);" id="a24" cols="45" onkeyup="limitText(this.form.a24,this.form.countdown1,4000);" rows="4" >N/A</textarea>
+                                 <br />
+                                 <font size="1">(Maximum characters: 4000)<br />
+                                   You have
+                                   <input name="countdown1" id="countdown1"  type="text" value="4000" readonly="true"  size="4"  />
+                                   characters left.</font></td>
+                           </tr>
+                         </table>
+                         
+                         <table width="100%" height="71" border="1" cellpadding="2" cellspacing="2">
+                           <tr>
+                             <td width="15%" rowspan="6" valign="middle"><img src="/Images/comm_issues.jpg" width="67" height="240" /></td>
+                             <td width="85%"><span class="style19">Dispatch or Comm Center Issue</span>
+                                 <input name="a25" id="a25"  type="radio" value="Yes" />
+                                 <strong>Yes</strong>
+                               <input name="a25" id="a25"  type="radio" value="No" />
+                               <strong>No </strong></td>
+                           </tr>
+                           <tr>
+                             <td><strong>Radio Frequency or Phone # Issue</strong>
+                               <input name="a26" id="a26"  type="radio" value="Yes" />
+                               <strong>Yes</strong>
+                               <input name="a26" id="a26"  type="radio" value="No" checked="checked"  />
+                               <strong>No</strong></td>
+                           </tr>
+                           <tr>
+       
+                             <td><strong>Flight Following or contact problems (Radio, GPS, Cell Phone, ect)</strong>
+                               <input name="a27" id="a27"  type="radio" value="Yes" />
+                               <strong>Yes</strong>
+                               <input name="a27" id="a27"  type="radio" value="No" checked="checked"  />
+                               <strong>No</strong></td>
+                           </tr>
+                           <tr>
+                             <td><table width="100%" border="1">
+                               <tr>
+                                 <td bgcolor="#990000"><div align="right"><strong><span class="style20">*Internal Issues=</span></strong></div></td>
+                                 <td bgcolor="#990000"><span class="style20">Problems specific to our internal dispatch center or company internal communication problems.</span></td>
+                               </tr>
+                               <tr>
+                                 <td width="36%" bgcolor="#990000"><div align="right"><strong><span class="style20">*External Issues=</span></strong></div></td>
+                                 <td width="64%" bgcolor="#990000"><span class="style20">Problems with Ground Communication on a scene for example when the aircraft has problems talking with the ground responder OR contacting a hospital directly from the aircarft but the problem DOES NOT involve our internal dispatch center (i.e. LifeCom, ARCH Dispatch, Flight Comm, MedCom, Omni Dispatch). </span></td>
+                               </tr>
+       
+                               <tr>
+                                 <td colspan="2"><table width="100%" border="0">
+                                   <tr>
+                                     <td height="24" colspan="2" bgcolor="#5187B5">&nbsp;</td>
+                                   </tr>
+                                   <tr>
+                                     <td height="24" bgcolor="#006699"><div align="center">
+                                       <input name="a83" id="a83"  type="radio" value="Internal" />
+                                       <span class="style12">Internal Issues </span></div></td>
+                                     <td bgcolor="#336633"><div align="center">
+                                       <input name="a83" id="a83"  type="radio" value="External" />
+                                       <span class="style12">External Issues</span> </div></td>
+                                   </tr>
+                                   <tr>
+                                     <td width="37%" height="24" bgcolor="#CC3300"><div align="center">
+                                       <input name="a83" id="a83"  type="radio" value="Both" />
+                                     <span class="style12">Both</span></div></td>
+                                     <td width="37%" bgcolor="#000000"><div align="center">
+                                       <input name="a83" id="a83"  type="radio" value="N/A" />
+                                       <span class="style12">N/A</span></div></td>
+                                   </tr>
+                                   
+                                 </table></td>
+                               </tr>
+                             </table></td>
+                           </tr>
+                           <tr>
+                             <td><strong>Explain any Safety Concern:
+                               <input name="a39" type="hidden" value="Pending Initial Review" id="a39"  />
+                             </strong></td>
+                           </tr>
+                           <tr>
+                             <td><label>
+                               <textarea name="a28" onkeydown="limitText(this.form.a28,this.form.countdown2,4000);" id="a28" cols="45" onkeyup="limitText(this.form.a28,this.form.countdown2,4000);" rows="7" >N/A</textarea><br>
+       <font size="1">(Maximum characters: 4000)<br>
+       You have <input name="countdown2" id="countdown2"  type="text" value="4000" readonly="true"  size="4"  /> characters left.</font>
+                             </label></td>
+                           </tr>
+                         </table>
+                         <table width="100%" height="71" border="1" cellpadding="2" cellspacing="2">
+                           <tr>
+                             <td width="15%" rowspan="9" valign="middle"><img src="/Images/customer_relations_issues_4.jpg" width="67" height="340" /></td>
+                             <td width="85%"> <strong>Customer Service Issue</strong>
+                               <input name="a79" type="radio" value="Yes" id="a79"  />
+                               <strong>Yes</strong>
+                               <input name="a79" type="radio" value="No" id="a79"  />
+                               <strong>No </strong></td>
+                           </tr>
+                           <tr>
+                             <td><strong>Were any delays encountered in response to the flight?</strong><br />
+                                 <input name="a80" type="radio" value="Yes" id="a80"  />
+                                 <strong>Yes</strong>
+                               <input name="a80" type="radio" value="No" checked="checked"  id="a80"  />
+                               <strong>No</strong></td>
+                           </tr>
+                           <tr>
+                             <td><strong>Were any delays encountered at the bedside?</strong>
+                               <input name="a84" type="radio" value="Yes" id="radio"  />
+                               <strong>Yes</strong>
+       <input name="a84" type="radio" value="No" checked="checked"  id="radio"  />
+       <strong>No</strong></td>
+                           </tr>
+                           <tr>
+                             <td><strong>Call Back Peformed</strong>
+                               <input name="a11" id="a11"  type="radio" value="yes" />
+                               <strong>Yes</strong>
+       
+                               <input name="a11" id="a11"  type="radio" value="No" />
+                               <strong>No</strong></td>
+                           </tr>
+                           <tr>
+                             <td><strong>Contact Person on Call Back:</strong>
+                               <input name="a12" type="text" id="a12"  size="20"  /></td>
+                           </tr>
+                           <tr>
+                             <td><div align="center"><span class="style21">If call back was not performed, please explain why</span></div></td>
+                           </tr>
+                           <tr>
+                             <td><textarea name="a81" onkeydown="limitText(this.form.a81,this.form.countdown3,4000);" id="a81" cols="45" onkeyup="limitText(this.form.a81,this.form.countdown3,4000);" rows="0" >N/A</textarea><br>
+       <font size="1">(Maximum characters: 4000)<br>
+       You have <input name="countdown3" id="countdown3"  type="text" value="4000" readonly="true"  size="4"  /> characters left.</font></td>
+                           </tr>
+                           <tr>
+                             <td><strong>Explain any Customer Service Concerns:</strong></td>
+                           </tr>
+                           <tr>
+                             <td><label>
+                               <textarea name="a82" onkeydown="limitText(this.form.a82,this.form.countdown4,4000);" id="a82" cols="45" onkeyup="limitText(this.form.a82,this.form.countdown4,4000);" rows="7" >N/A</textarea><br>
+       <font size="1">(Maximum characters: 4000)<br>
+       You have <input name="countdown4" id="countdown4"  type="text" value="4000" readonly="true"  size="4"  /> characters left.</font>
+                             </label></td>
+                           </tr>
+                         </table>
+                         <table width="90%" border="0" align="center" cellpadding="2" cellspacing="2">
+                           <tr>
+                             <td><div align="center"><img src="/Images/crew_comments.jpg" width="450" height="44" /></div></td>
+                           </tr>
+                           <tr>
+                             <td>&nbsp;</td>
+                           </tr>
+                           <tr>
+                             <td><div align="center">
+                                 <textarea name="a28b" onkeydown="limitText(this.form.a28b,this.form.countdown5,4000);" id="a28b" cols="50" onkeyup="limitText(this.form.a28b,this.form.countdown5,4000);" rows="5" >N/A
+       </textarea><br>
+       <font size="1">(Maximum characters: 4000)<br>
+       You have <input name="countdown5" id="countdown5"  type="text" value="4000" readonly="true"  size="4"  /> characters left.</font>
+                             </div></td>
+                           </tr>
+                         </table> 
+                         <div align="center">
+                           <table width="96%" border="0">
+                             <tr>
+                               <td width="35%" bgcolor="#990000"><div align="center"><span class="style12">Priority 1</span>
+                                       <input name="a28a" type="radio" value="One" id="a28a"  onclick="showHideSMS()"  />
+                               </div></td>
+                               <td width="32%" bgcolor="#FF6600"><div align="center"><span class="style12">Priority 2</span> 
+                                 <input name="a28a" type="radio" value="Two" id="a28a"  onclick="showHideSMS()"  />
+                               </div></td>
+                               <td width="33%" bgcolor="#009900"><div align="center"><span class="style12">No Issues to Report</span>
+                                       <input name="a28a" type="radio" value="No Reported Issues" id="a28a"  onclick="showHideSMS()"  />
+                               </div></td>
+                             </tr>
+                             <tr id="shwSMS" style="display:none;">
+                               <td colspan="3"><table width="100%" border="1" align="center">
+                           <tr>
+                             <td colspan="2">&nbsp;</td>
+                           </tr>
+                           <tr>
+                             <td colspan="2" bgcolor="#990000"><div align="center"><strong>Refer issue to the safety council/committee (SMS)? </strong></div></td>
+                           </tr>
+                           <tr>
+                             <td width="50%" bgcolor="#009900"><div align="center">
+                               <input name="sms" type="radio" value="Yes" />
+                             <strong>Yes</strong></div></td>
+                             <td width="50%" bgcolor="#009900"><div align="center">
+                               <input name="sms" type="radio" value="No" checked="checked" />
+                               <strong>No</strong></div></td>
+                           </tr>
+                         </table>
+                               </td>
+                             </tr>
+                           </table>
+                         </div>
+                         
+                         <br />
+       
+                         <table width="100%" border="0" cellspacing="2" cellpadding="2">
+                           <tr>
+                             <td width="50%"><div align="center">
+                                 <input name="Reset" id="Reset"  type="reset" value="Clear Form" /> <input name="a40" type="hidden" value="N/A" id="a40"  /> <input name="testdatamode" type="hidden" value="TEST DATA" id="testdatamode"  /> <input name="manualt" type="hidden" value="manualdispatch" id="manualt"  /> <input name="srlistTotals" type="hidden" value="2" id="srlistTotals"  />
+                             </div></td>
+                             <td width="50%"><div align="center">
+                             
+                             <input name="Submit" type="submit" value="Submit Debrief"/>
+                                     
+                             </div></td>
+                           </tr>
+                         </table>
+                         <p><br />
+                           <input name="MM_InsertRecord" id="MM_InsertRecord"  type="hidden" value="frmcqi" />
+               </p>
+                     </form>
+       
+                 </div>
+                 <div id="sidebar">
+                       <ul id="content-nav">
+                           <li><a class="b" href="index.cfm">Home</a></li>
+                           
+                           
+       <li><a class="b" href="downloadSafetyConnect.cfm?ConnectID=46" target="_blank"> Safety Connect</a></li>
+       
+       
+           <a href="certification_management.cfm">Certifications</a>
+       <li><a class="b" href="national_flight_debriefing.cfm">Transport Debriefing</a></li> <li><a class="a" href="urEntryRoutingProcessor.cfm">Utilization Review</a></li> <li><a class="a" href="app_cqi_program_locator.cfm">V1 CQI Review</a></li> <a class="a" href="cqifilteradmin.cfm">CQI Filter Admin</a> <li><a class="a" href="mdqi_module.cfm">MDQI</a></li> 
+       <li><a class="a" href="lateskillsentryV2start.cfm">Skills Reporting</a></li>
+       
+       
+       <li><a class="b" href="http://aircrew.ctsys.com" target="_blank">CTS Training</a></li>
+       <li><a class="b" href="https://www.rsq911solutions.com" target="_blank">RSQ 911</a></li>
+       <br />
+       
+                       </ul>
+                       
+                       <h2>Signature Override </h2>
+                       <ul>
+                         <li><a class="a" href="pfd_sig_or_request.cfm">Signature Override Request</a></li>
+                       </ul>
+                       
+                       <h2>Quick Info Links </h2>
+                       
+                       <ul>
+                         
+       <li><a href="safetyOpsHistory.cfm">Safety Alert History </a></li>
+       <li><a href="/Intranet/MercyOneIA/reportscentral.cfm">Reports Central</a></li> <li><a href="skillsReporting.cfm">Skills Search</a></li> <li><a href="mdqiReportingTool.cfm">MDQI Reporting Tool</a></li> <li><a href="/Intranet/MercyOneIA/utilities.cfm">Alert Config Utilities</a></li> <li><a href="cqiQuestionAdministrationV2.cfm">CQI Question Admin </a></li> <li><a class="a" href="flight_log.cfm">Transport Log</a></li> <li><a class="a" href="pfd_issue_queue.cfm">PTD Issue Queue</a></li> <li><a href="mdradmin.cfm">MDR Admin</a></li> <li><a href="phone_directory.cfm" target="_blank">Phone Directory</a></li> 
+       <li><a href="knowledgebaseResults.cfm">Knowledge Base</a></li>
+       
+       
+       
+           <li><a href="program_tickets.cfm">Customer Support</a></li>
+       
+                       </ul>
+                 </div>
+               </div>
+             <div id="footer">
+                   <p>&nbsp;</p>
+             </div>
+           </div>
+       </body>
+       </html>
+
+
+
+
+       from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+       from django.db import models
+       
+       
+       
+       class MyAccountManager(BaseUserManager):
+           def create_user(self, email, username, password=None):
+               if not email:
+                   raise ValueError('Users must have an email address')
+               if not username:
+                   raise ValueError('Users must have a username')
+       
+               user = self.model(
+                   email=self.normalize_email(email),
+                   username=username,
+               )
+       
+               user.set_password(password)
+               user.save(using=self._db)
+               return user
+       
+           def create_superuser(self, email, username, password):
+               user = self.create_user(
+                   email=self.normalize_email(email),
+                   password=password,
+                   username=username,
+               )
+               user.is_admin = True
+               user.is_staff = True
+               user.is_superuser = True
+               user.save(using=self._db)
+               return user
+       
+       
+       class Account(AbstractBaseUser):
+           email = models.EmailField(verbose_name="email", max_length=60, unique=True)
+           username = models.CharField(max_length=30, unique=True)
+           date_joined	= models.DateTimeField(verbose_name='date joined', auto_now_add=True)
+           last_login = models.DateTimeField(verbose_name='last login', auto_now=True)
+           is_admin = models.BooleanField(default=False)
+           is_active = models.BooleanField(default=True)
+           is_staff = models.BooleanField(default=False)
+           is_superuser = models.BooleanField(default=False)
+           user_role = models.CharField(max_length=30)
+           first_name = models.CharField(max_length=60)
+           last_name = models.CharField(max_length=30)
+           
+           USERNAME_FIELD = 'email'
+           REQUIRED_FIELDS = ['username']
+           objects = MyAccountManager()
+       
+           def __str__(self):
+               return self.email
+       
+           # For checking permissions. to keep it simple all admin have ALL permissons
+           def has_perm(self, perm, obj=None):
+               return self.is_admin
+       
+           # Does this user have permission to view this app? (ALWAYS YES FOR SIMPLICITY)
+           def has_module_perms(self, app_label):
+               return True

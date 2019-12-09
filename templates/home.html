@@ -1,6 +1,49 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>hi</h1>
+<h1>Flight Dashboard</h1>
+
+
+
+
+<div class="container">
+        <div class="row">
+          <div class="col-sm">
+            Priority 1
+            {% for flight in object1 %}
+
+                <ul>
+                    
+                    <li> <a href="flightdetail/{{flight.flight_id}}">{{ flight.flight_id }}</a> </li>
+                </ul>
+
+            {% endfor %}
+          </div>
+          <div class="col-sm">
+            Priority 2
+            {% for flight in object2 %}
+
+                <ul>
+                    
+                    <li> <a href="flightdetail/{{flight.flight_id}}">{{ flight.flight_id }}</a> </li>
+                </ul>
+
+            {% endfor %}
+          </div>
+          <div class="col-sm">
+                No Issues
+                {% for flight in objectNo %}
+    
+                    <ul>
+                        
+                        <li> <a href="flightdetail/{{flight.flight_id}}">{{ flight.flight_id }}</a> </li>
+                    </ul>
+    
+                {% endfor %}
+          </div>
+        </div>
+      </div>
+
+
 
 {% endblock content %}

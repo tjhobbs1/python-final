@@ -1,6 +1,96 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
+{% if error %}
+    {{ error }}
+<br>
+
+{% endif %}
+{% if request.user.is_authenticated %}
 <h1>Post Flight</h1>
+
+<form action="{% url 'postflight'%}" method="POST">{% csrf_token %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg">
+                    <p>Transport Date:  {{form.transport_date}}</p>
+                   
+                    <p>Flight Number: {{form.flight_num}}</p>
+                    <p>Base: {{form.base}}</p>
+                    <p>Transport Type: {{form.transport_type}}</p>
+                    <p>Tail Number: {{form.tail_num}}</p>
+                    <p>Med Crew One: {{form.med_crew_1}}</p>
+                    <p>Med Crew Two: {{form.med_crew_2}}</p>
+                    <p>Pilot: {{form.pilot}}</p>
+                    <p>Dispatcher: {{form.dispatcher}}</p>
+                    <p>Activity of Flight: {{form.activity_flight}}</p>
+                    <p>Scene or Hospital: {{form.scene_hosp}}</p>
+                    <p>Dispatched: {{form.start_time}}</p>
+                    <p>Enroute: {{form.lift_time}}</p>
+                    <p>At Sending: {{form.at_recieving_time}}</p>
+                    <p>At Patient Side: {{form.at_patient_time}}</p>
+                    <p>Depart Sending: {{form.depart_recieving_time}}</p>
+                    <p>IFR or VFR?: {{form.ifr_vfr}}</p>
+                    <p>Any Weather Issues: {{form.weather_issues}}</p>
+                    <p>Any Aviation Issues: {{form.aviation_issues}}</p>
+                    <p>Any Maintenance Issues: {{form.maintenance_issues}}</p>
+                    <p>Comments: {{form.aviation_issues_comments}}</p>
+                    <p>Severity: {{form.priority_level}}</p>
+                    
+                    
+                    
+                    <input type="submit" value="Submit">
+                
+
+            </div>
+               
+        </div>
+        
+
+    </div>
+       
+   
+        
+    <!-- <table>
+               
+            {{ form.as_table }}
+                     <tr>
+                        <td>&nbsp;</td>
+                        <td><input type="submit" value="Submit"></td>
+                    </tr>
+    </table> -->
+   
+
+
+<!--         
+        <select name="prefer_car_model" id="id_prefer_car_model" required>
+           
+            <option value="0" selected disabled> Select Car model </option>
+            {% for obj in account %}
+            <option value="{{obj.last_name}} {{ obj.first_name }}">{{obj.last_name}}, {{ obj.first_name }} </option>
+            {% endfor %}
+        </select> -->
+                
+                 
+
+                 
+
+
+</form>
+{%endif%}
+
+
+
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+    $.noConflict();
+jQuery(document).ready(function ($) {
+    $("#datepicker").datepicker({ dateFormat: 'yy-mm-dd' });
+});
+  </script>
+
 
 {% endblock content %}

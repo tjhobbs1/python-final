@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+<style>
+h1{
+    color: red
+}
+#alert{
+    color: red;
+}
+#no_alert{
+    text-decoration-color: green;
+}
+
+</style>
+
+{% block content %}
+<h1>Flight Info</h1>
+
+<div class="container">
+        <p>Transport Date: {{object.transport_date}}</p>
+        <p>Flight Number: {{object.flight_id}}</p>
+        <p>Base Location: {{object.base}}</p>
+        <p>Transport Type: {{object.transport_type}}</p>
+        <p>Transport Vehicle: {{object.tail_num}}</p>
+        <p>Med Crew 1: {{object.med_crew_1}}</p>
+        <p>Med Crew 2: {{object.med_crew_2}}</p>
+        <p>Pilot: {{object.pilot}}</p>
+        <p>Dispatcher: {{object.dispatch}}</p>
+        <p>Transport Completed?: {{object.activity_flight}}</p>
+        <p>Type of Flight: {{object.scene_hosp}}</p>
+        <p>Dispatched Time: {{object.assigned_time|date:'H:i'}}</p>
+        <p>Lift Time: {{object.lift_time|date:'H:i'}}</p>
+        <p>At Sending Time: {{object.at_sending_time|date:'H:i'}}</p>
+        <p>At Patient Side: {{object.at_patient_time|date:'H:i'}}</p>
+        <p>Depart Sending Time: {{object.depart_sending_time|date:'H:i'}}</p>
+        <p>IFR vs VFR: {{object.ifr_vfr}}</p>
+        {%if object.weather_issues == 'No'%}
+            <p>Weather Issues: <span id="no_alert">{{object.weather_issues}}</span></p>
+        {% else %}
+            <p>Weather Issues: <span id="alert">{{object.weather_issues}}</span></p>
+        {%endif%}
+
+        {%if object.aviation_issues == 'No'%}
+            <p>Aviation Issues: <span id="no_alert">{{object.aviation_issues}}</span></p>
+        {% else %}
+            <p>Aviation Issues: <span id="alert">{{object.aviation_issues}}</span></p>
+        {%endif%}
+
+        {%if object.maintenance_issues == 'No'%}
+            <p>Maintenance Issues: <span id="no_alert">{{object.maintenance_issues}}</span></p>
+        {% else %}
+            <p>Maintenance Issues: <span id="alert">{{object.maintenance_issues}}</span></p>
+        {%endif%}
+        
+        <p>Comments: {{object.aviation_issues_comments}}</p>
+
+
+</div>
+
+<div class="container">
+    <div>
+            {% if request.user.is_authenticated %}
+            {% if request.user.user_role == admin %}
+                <h1>Admin</h1>
+            {%endif%}
+        {%endif%}
+    </div>
+
+</div>
+
+
+
+
+
+{% endblock content %}
